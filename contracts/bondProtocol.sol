@@ -4,25 +4,63 @@ pragma solidity ^0.8.0;
 interface IERC20 {
     function transferFrom(address sender, address recipient, uint256 amount) external returns (bool);
     function transfer(address recipient, uint256 amount) external returns (bool);
+    function balanceOf(address account) external view returns (uint256);
 }
 
-contract TokenSwap {
-    address public token1;
-    address public token2;
+contract Staking {
+    IERC20 public stakingToken;
     address public owner;
+    uint256 public rewardRate; // Reward rate per block
 
-    event Swap(address indexed from, address indexed to, uint256 amount1, uint256 amount2);
+    mapping(address => uint256) public stakingBalance;
+    mapping(address => uint256) public rewardBalance;
+    mapping(address => uint256) public lastUpdateBlock;
 
-    constructor(address _token1, address _token2) {
-        token1 = _token1;
-        token2 = _token2;
+    event Staked(address indexed user, uint256 amount);
+    event Withdrawn(address indexed user, uint256 amount);
+    event RewardClaimed(address indexed user, uint256 reward);
+
+    constructor(address _stakingToken, uint256 _rewardRate) {
+        stakingToken = IERC20(_stakingToken);
         owner = msg.sender;
+        rewardRate = _rewardRate;
     }
 
-    function swap(address from, address to, uint256 amount1, uint256 amount2) public {
-        require(IERC20(token1).transferFrom(from, to, amount1), "Transfer of token1 failed");
-        require(IERC20(token2).transferFrom(to, from, amount2), "Transfer of token2 failed");
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Not the contract owner");
+        _;
+    }
 
-        emit Swap(from, to, amount1, amount2);
+    function stake(uint256 amount) external {
+        updateReward(msg.sender);
+        stakingToken.transferFrom(msg.sender, address(this), amount);
+        stakingBalance[msg.sender] += amount;
+        emit Staked(msg.sender, amount);
+    }
+
+    function withdraw(uint256 amount) external {
+        require(stakingBalance[msg.sender] >= amount, "Insufficient balance");
+        updateReward(msg.sender);
+        stakingBalance[msg.sender] -= amount;
+        stakingToken.transfer(msg.sender, amount);
+        emit Withdrawn(msg.sender, amount);
+    }
+
+    function claimReward() external {
+        updateReward(msg.sender);
+        uint256 reward = rewardBalance[msg.sender];
+        rewardBalance[msg.sender] = 0;
+        stakingToken.transfer(msg.sender, reward);
+        emit RewardClaimed(msg.sender, reward);
+    }
+
+    function updateReward(address account) internal {
+        uint256 blocks = block.number - lastUpdateBlock[account];
+        rewardBalance[account] += stakingBalance[account] * blocks * rewardRate;
+        lastUpdateBlock[account] = block.number;
+    }
+
+    function setRewardRate(uint256 _rewardRate) external onlyOwner {
+        rewardRate = _rewardRate;
     }
 }
