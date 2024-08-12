@@ -4,6 +4,8 @@ pragma solidity ^0.8.0;
 contract TokenExchange {
     uint256 public tokenPrice;
     uint256 public lockPeriod;
+    uint256 public fee;
+    
     mapping(address => uint256) public balances;
     mapping(address => uint256) public lockTimes;
 
