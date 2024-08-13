@@ -12,15 +12,15 @@ const Marketplace: React.FC = () => {
                     <label>
                         Project Token
                         <select>
-                            <option value="swell">SWELL</option>
-                            <option value="anotherToken">Another Token</option>
+                            <option value="X Token">X token</option>
+                            <option value="EKUBO">EKUBO</option>
                         </select>
                     </label>
                     <label>
                         Blockchain
                         <select>
-                            <option value="moonbeam">Moonbeam</option>
-                            <option value="anotherBlockchain">Another Blockchain</option>
+                            <option value="Kakarot">Kakarot</option>
+                            <option value="Starknet">Starknet</option>
                         </select>
                     </label>
                 </div>
@@ -31,15 +31,15 @@ const Marketplace: React.FC = () => {
                         <label>
                             Payout Token
                             <select>
-                                <option value="scxdot">$xcDOT</option>
-                                <option value="anotherPayout">Another Payout</option>
+                                <option value="scxdot">$ETH</option>
+                                <option value="anotherPayout">$STRK</option>
                             </select>
                         </label>
                         <label>
                             Blockchain
                             <select>
-                                <option value="moonbeam">Moonbeam</option>
-                                <option value="astar">Astar</option>
+                                <option value="Kakarot">Kakarot</option>
+                                <option value="Starknet">Starknet</option>
                             </select>
                         </label>
                         <label>
@@ -53,7 +53,7 @@ const Marketplace: React.FC = () => {
                             Quantity
                             <input type="number" defaultValue={100000} />
                         </label>
-                        <button>Issue market</button>
+                        <button>Launch market</button>
                     </div>
                     <button>Add new market</button>
                 </div>

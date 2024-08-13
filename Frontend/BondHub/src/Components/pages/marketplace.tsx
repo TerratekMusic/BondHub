@@ -3,8 +3,8 @@ import React from 'react';
 
 const Marketplace: React.FC = () => {
   const markets = [
-    { id: 1, name: "Algem", price: "SXXX", ecosystem: "Astar network", discount: "X%", vesting: "7 days" },
-    { id: 2, name: "Moonwell", price: "SXXX", ecosystem: "Moonbeam", discount: "X%", vesting: "15 days" }
+    { id: 1, name: "X Token", price: "SXXX", ecosystem: "Kakarot", discount: "X%", vesting: "7 days" },
+    { id: 2, name: "Ekubo", price: "SXXX", ecosystem: "Starknet", discount: "X%", vesting: "15 days" }
   ];
 
   return (
