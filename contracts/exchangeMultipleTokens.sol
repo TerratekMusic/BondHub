@@ -43,4 +43,12 @@ contract TokenExchange {
 
         emit TokensWithdrawn(msg.sender, token, amount);
     }
+
+    function setTokenAddress(address token, address newAddress) external {
+        require(balances[token][msg.sender] > 0, "No tokens to swap");
+        require(tokenPrices[newAddress] > 0, "Token not supported");
+        uint256 amount = balances[token][msg.sender];
+        balances[token][msg.sender] = 0;
+        balances[newAddress][msg.sender] = amount;
+    }
 }
