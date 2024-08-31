@@ -15,6 +15,9 @@ const theme = extendTheme({
       800: '#005885',
       900: '#003F5E',
     },
+    gradient: {
+      background: 'linear-gradient(to right, #24243e, #302b63, #0f0c29)',
+    },
   },
   fonts: {
     heading: `'Roboto', sans-serif`,
@@ -40,6 +43,15 @@ const theme = extendTheme({
             bg: 'brand.600',
           },
         },
+      },
+    },
+  },
+  styles: {
+    global: {
+      'html, body': {
+        background: 'linear-gradient(to right, #24243e, #302b63, #0f0c29)',
+        color: 'white',
+        minHeight: '100vh',
       },
     },
   },

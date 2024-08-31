@@ -24,10 +24,10 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
+  display: block;  /* Cambia 'flex' a 'block' */
   min-width: 320px;
   min-height: 100vh;
+  background: linear-gradient(to right, #24243e, #302b63, #0f0c29); /* Aplica el degradado aquí si lo deseas */
 }
 
 h1 {

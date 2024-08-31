@@ -32,7 +32,7 @@ const NavBar: React.FC = () => {
       </div>
       <div style={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}> {/* Navigation links section */}
         <Link to="/" style={linkStyle}>Home</Link>
-        <Link to="/dapp" style={linkStyle}>Markets Lab</Link>
+        <Link to="/Marketlab" style={linkStyle}>Markets Lab</Link>
         <Link to="/marketplace" style={linkStyle}>Marketplace</Link>
       </div>
       <div style={{ flexGrow: 0, color: 'white' }}> {/* Wallet connect section */}

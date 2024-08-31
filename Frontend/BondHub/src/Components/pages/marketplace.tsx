@@ -1,5 +1,6 @@
 // src/components/pages/Marketplace.tsx
 import React from 'react';
+import { Box, Heading, Table, Thead, Tbody, Tr, Th, Td, Button } from '@chakra-ui/react';
 
 const Marketplace: React.FC = () => {
   const markets = [
@@ -8,33 +9,33 @@ const Marketplace: React.FC = () => {
   ];
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h2>Live markets</h2>
-      <table style={{ width: '100%', backgroundColor: 'black', color: 'white', textAlign: 'center', borderRadius: '10px' }}>
-        <thead>
-          <tr>
-            <th>Bond</th>
-            <th>Bond Price</th>
-            <th>Ecosystem</th>
-            <th>Discount</th>
-            <th>Vesting</th>
-            <th></th> {/* For the view more button */}
-          </tr>
-        </thead>
-        <tbody>
+    <Box padding="12.5rem">
+      <Heading as="h2" marginBottom="4" color="brand.500">Live markets</Heading>
+      <Table variant="simple" size="md" backgroundColor="black" color="white" borderRadius="10px">
+        <Thead>
+          <Tr>
+            <Th>Bond</Th>
+            <Th>Bond Price</Th>
+            <Th>Ecosystem</Th>
+            <Th>Discount</Th>
+            <Th>Vesting</Th>
+            <Th></Th> {/* For the view more button */}
+          </Tr>
+        </Thead>
+        <Tbody>
           {markets.map(market => (
-            <tr key={market.id}>
-              <td>{market.name}</td>
-              <td>{market.price}</td>
-              <td>{market.ecosystem}</td>
-              <td>{market.discount}</td>
-              <td>{market.vesting}</td>
-              <td><button style={{ padding: '5px 10px', borderRadius: '5px', color: 'black' }}>View more</button></td>
-            </tr>
+            <Tr key={market.id}>
+              <Td>{market.name}</Td>
+              <Td>{market.price}</Td>
+              <Td>{market.ecosystem}</Td>
+              <Td>{market.discount}</Td>
+              <Td>{market.vesting}</Td>
+              <Td><Button colorScheme="teal">View more</Button></Td>
+            </Tr>
           ))}
-        </tbody>
-      </table>
-    </div>
+        </Tbody>
+      </Table>
+    </Box>
   );
 };
 

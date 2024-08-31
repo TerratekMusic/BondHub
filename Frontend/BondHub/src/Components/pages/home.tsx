@@ -1,51 +1,61 @@
-// src/Components/pages/home.tsx
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import { Box, Text } from '@chakra-ui/react';
 
 const Home: React.FC = () => {
-  const containerStyle = {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center', // Asegura que el contenido se centre horizontalmente
-    alignItems: 'center',     // Centra el contenido verticalmente
-    height: '100vh',          // Altura completa de la ventana
-    width: '100vw',           // Ancho completo de la ventana
-  };
-
-  const contentStyle = {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: '20px',
-    textAlign: 'center',
-    width: '100%',            // Ocupa solo el ancho necesario
-    maxWidth: '600px',        // Máximo ancho para el contenido central
-  };
-
-  const buttonStyle = {
-    margin: '10px',
-    padding: '10px 20px',
-    fontSize: '16px',
-    cursor: 'pointer',
-    background: '#333',
-    color: 'white',
-    textDecoration: 'none',
-    borderRadius: '5px',
-  };
-
   return (
-    <div style={containerStyle}>
-      <div style={contentStyle}>
-        <h1>BondHub</h1>
-        <p>Build Robust Treasuries and Empower Your Token Holders with Bondhub.</p>
-        <div>
-          <Link to="/marketplace" style={buttonStyle}>Marketplace</Link>
-          <Link to="/marketlab" style={buttonStyle}>MarketLab</Link>
-        </div>
-      </div>
-    </div>
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      minH="100vh"
+      bg="linear-gradient(to right, #24243e, #302b63, #0f0c29)" // Aplica el degradado
+      color="white"
+    >
+      <Box textAlign="center" maxW="600px" p="20px">
+        <Text as="h1" fontSize="4xl" mb="4">
+          BondHub
+        </Text>
+        <Text fontSize="xl" mb="8">
+          Build Robust Treasuries and Empower Your Token Holders with Bondhub.
+        </Text>
+        <Box>
+          <Link to="/marketplace">
+            <Box
+              as="button"
+              backgroundColor="#333"
+              color="white"
+              padding="10px 20px"
+              margin="10px"
+              borderRadius="5px"
+              fontSize="16px"
+              cursor="pointer"
+              textDecoration="none"
+              _hover={{ backgroundColor: "#555" }}
+            >
+              Marketplace
+            </Box>
+          </Link>
+          <Link to="/marketlab">
+            <Box
+              as="button"
+              backgroundColor="#333"
+              color="white"
+              padding="10px 20px"
+              margin="10px"
+              borderRadius="5px"
+              fontSize="16px"
+              cursor="pointer"
+              textDecoration="none"
+              _hover={{ backgroundColor: "#555" }}
+            >
+              MarketLab
+            </Box>
+          </Link>
+        </Box>
+      </Box>
+    </Box>
   );
 };
 
