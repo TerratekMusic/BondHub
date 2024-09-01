@@ -9,9 +9,9 @@ const Marketplace: React.FC = () => {
   ];
 
   return (
-    <Box padding="12.5rem">
-      <Heading as="h2" marginBottom="4" color="brand.500">Live markets</Heading>
-      <Table variant="simple" size="md" backgroundColor="black" color="white" borderRadius="10px">
+    <Box padding="10.5rem">
+      <Heading as="h2" mb="2rem">Live markets</Heading>
+      <Table variant="simple" size="md" backgroundColor="transparent" color="white" borderRadius="10px">
         <Thead>
           <Tr>
             <Th>Bond</Th>

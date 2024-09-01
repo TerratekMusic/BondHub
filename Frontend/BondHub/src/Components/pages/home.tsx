@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Box, Text } from '@chakra-ui/react';
+import { Box, Text, Button } from '@chakra-ui/react';
 
 const Home: React.FC = () => {
   return (
@@ -10,48 +10,33 @@ const Home: React.FC = () => {
       justifyContent="center"
       alignItems="center"
       minH="100vh"
-      bg="linear-gradient(to right, #24243e, #302b63, #0f0c29)" // Aplica el degradado
       color="white"
     >
       <Box textAlign="center" maxW="600px" p="20px">
-        <Text as="h1" fontSize="4xl" mb="4">
+        <Text as="h1">
           BondHub
         </Text>
-        <Text fontSize="xl" mb="8">
-          Build Robust Treasuries and Empower Your Token Holders with Bondhub.
+        <Text as="h2" fontSize="xl">
+          Build Robust Treasuries and Empower Your Token Holders
         </Text>
-        <Box>
+        <Box mt="4">
           <Link to="/marketplace">
-            <Box
-              as="button"
-              backgroundColor="#333"
-              color="white"
-              padding="10px 20px"
+            <Button
+              variant="solid"
+              colorScheme="brand"  // Usa los estilos definidos en el tema
               margin="10px"
-              borderRadius="5px"
-              fontSize="16px"
-              cursor="pointer"
-              textDecoration="none"
-              _hover={{ backgroundColor: "#555" }}
             >
               Marketplace
-            </Box>
+            </Button>
           </Link>
           <Link to="/marketlab">
-            <Box
-              as="button"
-              backgroundColor="#333"
-              color="white"
-              padding="10px 20px"
+            <Button
+              variant="solid"
+              colorScheme="brand"  // Usa los estilos definidos en el tema
               margin="10px"
-              borderRadius="5px"
-              fontSize="16px"
-              cursor="pointer"
-              textDecoration="none"
-              _hover={{ backgroundColor: "#555" }}
             >
               MarketLab
-            </Box>
+            </Button>
           </Link>
         </Box>
       </Box>

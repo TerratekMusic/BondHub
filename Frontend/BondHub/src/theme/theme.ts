@@ -16,42 +16,195 @@ const theme = extendTheme({
       900: '#003F5E',
     },
     gradient: {
-      background: 'linear-gradient(to right, #24243e, #302b63, #0f0c29)',
+      background: "linear-gradient(to right, #24243e, #302b63, #0f0c29)",
+    },
+    // Colores personalizados asumidos de tu paleta
+    custom: {
+      primary: '#4E60AA', // Color principal para botones y elementos destacados
+      secondary: '#303347', // Color secundario para fondos o bordes
+      accent: '#F5A623', // Color de acento para llamadas a la acción
+      muted: '#44556D', // Color para textos menos destacados
+      danger: '#E53E3E', // Color para acciones de peligro o errores
+      success: '#38A169', // Color para acciones exitosas o confirmaciones
+      info: '#3182CE', // Color para información adicional
     },
   },
   fonts: {
-    heading: `'Roboto', sans-serif`,
-    body: `'Roboto', sans-serif`,
+    heading: `'Exo 2', sans-serif`, // Exo 2 para los encabezados
+    body: `'Exo 2', sans-serif`, // Exo 2 para el cuerpo del texto
   },
   components: {
     Button: {
       baseStyle: {
         fontWeight: 'bold',
+        borderRadius: 'md',
       },
       sizes: {
-        xl: {
-          h: '56px',
+        sm: {
+          fontSize: 'sm',
+          px: 4,
+          py: 2,
+        },
+        md: {
+          fontSize: 'md',
+          px: 6,
+          py: 3,
+        },
+        lg: {
           fontSize: 'lg',
-          px: '32px',
+          px: 8,
+          py: 4,
+        },
+        xl: {
+          fontSize: 'xl',
+          px: 10,
+          py: 6,
         },
       },
       variants: {
         solid: {
-          bg: 'brand.500',
+          bg: 'custom.primary',
           color: 'white',
           _hover: {
-            bg: 'brand.600',
+            bg: 'custom.primary',
+            opacity: 0.9,
+          },
+          _active: {
+            bg: 'custom.primary',
+            opacity: 0.8,
           },
         },
+        outline: {
+          border: '2px solid',
+          borderColor: 'custom.primary',
+          color: 'custom.primary',
+          _hover: {
+            bg: 'custom.primary',
+            color: 'white',
+          },
+          _active: {
+            bg: 'custom.primary',
+            opacity: 0.8,
+          },
+        },
+        ghost: {
+          color: 'custom.primary',
+          _hover: {
+            bg: 'custom.primary',
+            color: 'white',
+          },
+          _active: {
+            bg: 'custom.primary',
+            opacity: 0.8,
+          },
+        },
+        link: {
+          color: 'custom.primary',
+          _hover: {
+            textDecoration: 'underline',
+            color: 'custom.accent',
+          },
+        },
+        accent: {
+          bg: 'custom.accent',
+          color: 'white',
+          _hover: {
+            bg: 'custom.accent',
+            opacity: 0.9,
+          },
+          _active: {
+            bg: 'custom.accent',
+            opacity: 0.8,
+          },
+        },
+        danger: {
+          bg: 'custom.danger',
+          color: 'white',
+          _hover: {
+            bg: 'custom.danger',
+            opacity: 0.9,
+          },
+          _active: {
+            bg: 'custom.danger',
+            opacity: 0.8,
+          },
+        },
+        success: {
+          bg: 'custom.success',
+          color: 'white',
+          _hover: {
+            bg: 'custom.success',
+            opacity: 0.9,
+          },
+          _active: {
+            bg: 'custom.success',
+            opacity: 0.8,
+          },
+        },
+        info: {
+          bg: 'custom.info',
+          color: 'white',
+          _hover: {
+            bg: 'custom.info',
+            opacity: 0.9,
+          },
+          _active: {
+            bg: 'custom.info',
+            opacity: 0.8,
+          },
+        },
+      },
+      defaultProps: {
+        size: 'md',
+        variant: 'solid',
       },
     },
   },
   styles: {
     global: {
       'html, body': {
-        background: 'linear-gradient(to right, #24243e, #302b63, #0f0c29)',
+        backgroundImage: "url('/src/assets/images/generalbg.png')",
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
         color: 'white',
         minHeight: '100vh',
+        fontFamily: `'Exo 2', sans-serif`,
+      },
+      h1: {
+        fontWeight: '900', // Black
+        fontSize: '4rem',
+        lineHeight: '1.2',
+      },
+      h2: {
+        fontWeight: '600', // Extra Bold
+        fontSize: '2.2rem',
+        lineHeight: '1.3',
+      },
+      h3: {
+        fontWeight: '700', // Bold
+        fontSize: '2.5rem',
+        lineHeight: '1.4',
+      },
+      h4: {
+        fontWeight: '600', // Semi Bold
+        fontSize: '2rem',
+        lineHeight: '1.5',
+      },
+      h5: {
+        fontWeight: '500', // Medium
+        fontSize: '1.5rem',
+        lineHeight: '1.6',
+      },
+      h6: {
+        fontWeight: '400', // Regular
+        fontSize: '1.25rem',
+        lineHeight: '1.7',
+      },
+      p: {
+        fontWeight: '400', // Regular
+        fontSize: '1rem',
+        lineHeight: '1.8',
       },
     },
   },

@@ -1,14 +1,13 @@
-// src/components/pages/MarketLab.tsx
 import React from 'react';
 import { Box, Text, Button, Select, Divider, Heading } from '@chakra-ui/react';
-import NavBar from '../navbar'; // Asegúrate de que la ruta de importación es correcta
+import NavBar from '../navbar'; 
 
 const MarketLab: React.FC = () => {
     return (
-        <Box bgGradient="linear(to-r, #24243e, #302b63, #0f0c29)" minH="100vh" color="white">
+        <Box minH="100vh" color="white"> {/* Eliminamos bgGradient para permitir el fondo global */}
             <NavBar /> {/* Reutilización del NavBar en MarketLab */}
-            <Box padding="20px">
-                <Heading as="h2" size="xl" mb="4">Set up a bond market</Heading>
+            <Box padding="6rem" mb="10rem">  {/* Ajusta el padding aquí para mover todo hacia arriba */}
+                <Heading as="h2" size="xl"  mb="1rem">Set up a bond market</Heading>
                 <Box mb="4">
                     <Text mb="2">Project Token</Text>
                     <Select placeholder="Select Token" bg="gray.700">
@@ -25,7 +24,6 @@ const MarketLab: React.FC = () => {
                 </Box>
                 <Divider mb="4" />
                 <Box>
-                    <Heading as="h3" size="lg" mb="4">Payout Token | Blockchain | Discount | Quantity</Heading>
                     <Box display="flex" gap="4" mb="4">
                         <Box>
                             <Text mb="2">Payout Token</Text>
