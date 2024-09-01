@@ -197,7 +197,7 @@ const theme = extendTheme({
         lineHeight: '1.6',
       },
       h6: {
-        fontWeight: '400', // Regular
+        fontWeight: '200', // Regular
         fontSize: '1.25rem',
         lineHeight: '1.7',
       },
