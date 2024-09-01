@@ -14,12 +14,21 @@ const Home: React.FC = () => {
     >
       <Box textAlign="center" maxW="600px" p="20px">
         <Text as="h1">
-          BondHub
+          Bondhub
         </Text>
         <Text as="h2" fontSize="xl">
           Build Robust Treasuries and Empower Your Token Holders
         </Text>
         <Box mt="4">
+          <Link to="/marketlab">
+            <Button
+              variant="solid"
+              colorScheme="brand"  // Usa los estilos definidos en el tema
+              margin="10px"
+            >
+              Markets Lab
+            </Button>
+          </Link>
           <Link to="/marketplace">
             <Button
               variant="solid"
@@ -27,15 +36,6 @@ const Home: React.FC = () => {
               margin="10px"
             >
               Marketplace
-            </Button>
-          </Link>
-          <Link to="/marketlab">
-            <Button
-              variant="solid"
-              colorScheme="brand"  // Usa los estilos definidos en el tema
-              margin="10px"
-            >
-              MarketLab
             </Button>
           </Link>
         </Box>

@@ -4,8 +4,8 @@ import { Box, Heading, Table, Thead, Tbody, Tr, Th, Td, Button } from '@chakra-u
 
 const Marketplace: React.FC = () => {
   const markets = [
-    { id: 1, name: "X Token", price: "SXXX", ecosystem: "Kakarot", discount: "X%", vesting: "7 days" },
-    { id: 2, name: "Ekubo", price: "SXXX", ecosystem: "Starknet", discount: "X%", vesting: "15 days" }
+    { id: 1, name: "$pToken", price: "SXXX", ecosystem: "Kakarot",  vesting: "7 days" },
+    { id: 2, name: "Ekubo", price: "SXXX", ecosystem: "Starknet", vesting: "15 days" }
   ];
 
   return (
@@ -16,8 +16,7 @@ const Marketplace: React.FC = () => {
           <Tr>
             <Th>Bond</Th>
             <Th>Bond Price</Th>
-            <Th>Ecosystem</Th>
-            <Th>Discount</Th>
+            <Th>Blockchain</Th>
             <Th>Vesting</Th>
             <Th></Th> {/* For the view more button */}
           </Tr>
@@ -28,7 +27,6 @@ const Marketplace: React.FC = () => {
               <Td>{market.name}</Td>
               <Td>{market.price}</Td>
               <Td>{market.ecosystem}</Td>
-              <Td>{market.discount}</Td>
               <Td>{market.vesting}</Td>
               <Td><Button colorScheme="teal">View more</Button></Td>
             </Tr>
