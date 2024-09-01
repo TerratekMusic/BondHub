@@ -177,7 +177,7 @@ const theme = extendTheme({
         lineHeight: '1.2',
       },
       h2: {
-        fontWeight: '600', // Extra Bold
+        fontWeight: '300', // Extra Bold
         fontSize: '2.2rem',
         lineHeight: '1.3',
       },

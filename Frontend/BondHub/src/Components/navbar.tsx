@@ -28,7 +28,7 @@ const NavBar: React.FC = () => {
   return (
     <nav style={navStyle}>
       <div style={{ flexGrow: 0 }}> {/* Sección del logo */}
-        <img src="/path/to/your/logo.png" alt="Logo" style={{ height: '50px' }} />
+        <img src="/src/assets/images/logo.png" alt="Logo" style={{ height: '50px' }} />
       </div>
       <div style={{ flexGrow: 1, display: 'flex', justifyContent: 'center' }}> {/* Sección de enlaces de navegación */}
         <Link to="/" style={linkStyle}>Home</Link>
