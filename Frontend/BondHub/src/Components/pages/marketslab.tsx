@@ -4,12 +4,13 @@ import NavBar from '../navbar';
 
 const MarketLab: React.FC = () => {
     // Estado para almacenar los valores seleccionados por el usuario
-    const [projectToken, setProjectToken] = useState('EKUBO');
-    const [blockchain, setBlockchain] = useState('Kakarot');
+    const [projectToken, setProjectToken] = useState('');
+    const [blockchain, setBlockchain] = useState('');
     const [payoutToken, setPayoutToken] = useState('ETH');
     const [vestingPeriod, setVestingPeriod] = useState('7 days');
     const [quantity, setQuantity] = useState('');
     const [tokenPrice, setTokenPrice] = useState('');
+    const [treasuryAddress, setTreasuryAddress] = useState('');
 
     const handleLaunchMarket = () => {
         console.log('Launching market with:', { projectToken, blockchain, payoutToken, vestingPeriod, quantity, tokenPrice });
@@ -27,7 +28,7 @@ const MarketLab: React.FC = () => {
                     {/* Selección del Token del Proyecto */}
                     <Box>
                         <Text as="h6" mb="2">Project Token</Text>
-                        <Select
+                        <Input
                             bg="transparent" 
                             color="white"
                             border="1px solid white"
@@ -36,8 +37,7 @@ const MarketLab: React.FC = () => {
                             value={projectToken}
                             onChange={(e) => setProjectToken(e.target.value)}
                         >
-                            <option style={{ color: 'black' }} value="pToken">$pToken</option>
-                        </Select>
+                        </Input>
                     </Box>
 
                     {/* Selección de la Blockchain */}
@@ -55,6 +55,22 @@ const MarketLab: React.FC = () => {
                             <option style={{ color: 'black' }} value="Kakarot">Kakarot</option>
                             <option style={{ color: 'black' }} value="Starknet">Starknet</option>
                         </Select>
+                    </Box>
+
+                    {/* Seteo smart contract treasury */}
+                                        <Box>
+                        <Text as="h6" mb="2">Treasury Address</Text>
+                        <Input
+                            bg="transparent"
+                            color="white"
+                            border="1px solid white"
+                            _hover={{ borderColor: 'gray.500' }}
+                            _focus={{ borderColor: 'white', boxShadow: '0 0 0 1px white' }}
+                            value={blockchain}
+                            onChange={(e) => setTreasuryAddress(e.target.value)}
+                        >
+
+                        </Input>
                     </Box>
 
                     <Divider borderColor="gray.600" />
