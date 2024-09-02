@@ -129,6 +129,19 @@
         "type": "address"
       }
     ],
+    "name": "withdrawCollectedEth",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      }
+    ],
     "name": "withdrawTokens",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -206,6 +219,11 @@
         "internalType": "address",
         "name": "",
         "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
       }
     ],
     "stateMutability": "view",
@@ -289,6 +307,11 @@
       {
         "internalType": "uint256",
         "name": "tokenAmount",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "totalEthCollected",
         "type": "uint256"
       }
     ],

@@ -1,3 +1,4 @@
+
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
@@ -10,7 +11,8 @@ contract BondExchange {
         address tokenAddress;
         uint256 tokenPrice;
         address tokenOwner;
-         uint256 tokenAmount;
+        uint256 tokenAmount;
+        uint256 totalEthCollected;
     }
      struct TokenBalance {
         address tokenAddress;
@@ -30,38 +32,51 @@ contract BondExchange {
     }
 
 
- 
- function setTokenDetails(address _tokenAddress, uint256 _tokenPrice,  uint256 _tokenAmount) public payable {
-        // Transfer the specified amount of tokens from the msg.sender to the contract
-        // require(IERC20(_tokenAddress).transferFrom(msg.sender, address(this), _tokenAmount), "Token transfer failed");
-       
-             
+    
+    function setTokenDetails(address _tokenAddress, uint256 _tokenPrice,  uint256 _tokenAmount) public payable {
+            // Transfer the specified amount of tokens from the msg.sender to the contract
+            require(IERC20(_tokenAddress).transferFrom(msg.sender, address(this), _tokenAmount), "Token transfer failed");
+        
+                
 
-        tokenDetails[_tokenAddress] = BondInfo({
-            tokenAddress: _tokenAddress,
-            tokenPrice: _tokenPrice,
-            tokenOwner: msg.sender,
-            tokenAmount: _tokenAmount // Store the token amount
-        });
-    }
+            tokenDetails[_tokenAddress] = BondInfo({
+                tokenAddress: _tokenAddress,
+                tokenPrice: _tokenPrice,
+                tokenOwner: msg.sender,
+                tokenAmount: _tokenAmount, // Store the token amount to be sold
+                totalEthCollected: 0 // Initialize total ETH collected to 0
+            });
+        }
 
-function buyBond(address token) external payable {
+
+    function buyBond(address token) external payable {
         require(msg.value > 0, "Send Ether to buy Bonds");
-       
-           // Access the BondInfo struct for the given token address
-        BondInfo memory bondInfo = tokenDetails[token];
+
+        // Access the BondInfo struct for the given token address
+        BondInfo storage bondInfo = tokenDetails[token]; // Use storage instead of memory
         uint256 price = bondInfo.tokenPrice;
         require(price > 0, "Token not supported");
-       
+
+        // Calculate the amount of tokens to be purchased
         uint256 amount = msg.value / price;
 
-        
-           // Debugging events    // Debugging events
-      emit DebugLog("Before updating balances", balances[token][msg.sender], lockTimes[token][msg.sender]);
+        // Ensure the contract has enough tokens
+        require(amount <= bondInfo.tokenAmount, "Not enough tokens available");
 
+        // Update total ETH collected
+        bondInfo.totalEthCollected += msg.value;
+
+            // Update the token amount in the contract
+        bondInfo.tokenAmount -= amount;
+
+        // Debugging events
+        emit DebugLog("Before updating balances", balances[token][msg.sender], lockTimes[token][msg.sender]);
+
+        // Update the balances and lock times
         balances[token][msg.sender] += amount;
         lockTimes[token][msg.sender] = block.timestamp + lockPeriod;
-         // Debugging events
+
+        // Debugging events
         emit DebugLog("After updating balances", balances[token][msg.sender], lockTimes[token][msg.sender]);
 
         emit BondPurchased(msg.sender, token, amount);
@@ -81,36 +96,23 @@ function buyBond(address token) external payable {
         emit TokensWithdrawn(msg.sender, token, amount);
     }
 
-    function getTokenDetails(address _tokenAddress) public view returns (address, uint256, address) {
+    function getTokenDetails(address _tokenAddress) public view returns (address, uint256, address, uint256) {
         BondInfo memory tokenInfo = tokenDetails[_tokenAddress];
-        return (tokenInfo.tokenAddress, tokenInfo.tokenPrice, tokenInfo.tokenOwner);
+        return (tokenInfo.tokenAddress, tokenInfo.tokenPrice, tokenInfo.tokenOwner, tokenInfo.totalEthCollected);
     }
     
     function getBalance(address user, address token) public view returns (uint256) {
         return balances[token][user];
     }
-    
-    function getTokenHolders(address token) public view returns (address[] memory) {
-        uint256 holderCount = 0;
-        address[] memory tempHolders = new address[](1000); // Temporary array with a fixed size
+     function withdrawCollectedEth(address token) external {
+        BondInfo storage bondInfo = tokenDetails[token];
+        require(msg.sender == bondInfo.tokenOwner, "Only the token owner can withdraw collected ETH");
 
-        // Iterate through the outer mapping (addresses of users)
-        for (uint256 i = 0; i < 1000; i++) {
-            address user = address(uint160(i));
-            if (balances[user][token] > 0) {
-                tempHolders[holderCount] = user;
-                holderCount++;
-            }
-        }
+        uint256 amount = bondInfo.totalEthCollected;
+        require(amount > 0, "No ETH to withdraw");
 
-        // Create a dynamic array with the exact size
-        address[] memory holders = new address[](holderCount);
-        for (uint256 j = 0; j < holderCount; j++) {
-            holders[j] = tempHolders[j];
-        }
+        bondInfo.totalEthCollected = 0;
 
-        return holders;
+        payable(msg.sender).transfer(amount);
     }
-
-    
 }
