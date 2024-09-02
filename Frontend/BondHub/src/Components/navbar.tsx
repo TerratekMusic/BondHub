@@ -73,6 +73,12 @@ const NavBar: React.FC = () => {
         <Link to="/marketplace" style={linkStyle}>
           Marketplace
         </Link>
+        <Link to="/claimTokens" style={linkStyle}>
+          Claim
+        </Link>
+        <Link to="/earnings" style={linkStyle}>
+          Earnings
+        </Link>
       </div>
       <div style={linkStyle}>
         <p>{address}</p>

@@ -7,6 +7,8 @@ import Navbar from './Components/navbar';
 import Home from './Components/pages/home';
 import MarketLab from './Components/pages/marketslab';
 import Marketplace from './Components/pages/marketplace';
+import ClaimTokens from './Components/pages/ClaimTokens';
+import Earnings from './Components/pages/earnings'
 
 const App: React.FC = () => {
   return (
@@ -17,6 +19,8 @@ const App: React.FC = () => {
           <Route path="/" element={<Home />} />
           <Route path="/marketLab" element={<MarketLab />} />
           <Route path="/marketplace" element={<Marketplace />} />
+          <Route path="/claimtokens" element={<ClaimTokens />} />
+          <Route path="/earnings" element={<Earnings />} />
         </Routes>
       </Router>
     </ChakraProvider>
