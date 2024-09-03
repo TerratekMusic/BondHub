@@ -172,6 +172,46 @@ const abiBond = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "getAllBonds",
+    outputs: [
+      {
+        components: [
+          {
+            internalType: "address",
+            name: "tokenAddress",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "tokenPrice",
+            type: "uint256",
+          },
+          {
+            internalType: "address",
+            name: "tokenOwner",
+            type: "address",
+          },
+          {
+            internalType: "uint256",
+            name: "tokenAmount",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "totalEthCollected",
+            type: "uint256",
+          },
+        ],
+        internalType: "struct BondExchange.BondInfo[]",
+        name: "",
+        type: "tuple[]",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       {
         internalType: "address",
@@ -282,6 +322,25 @@ const abiBond = [
   {
     inputs: [
       {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "tokenAddresses",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "",
         type: "address",
@@ -319,5 +378,4 @@ const abiBond = [
     type: "function",
   },
 ];
-
 export { abiBond };

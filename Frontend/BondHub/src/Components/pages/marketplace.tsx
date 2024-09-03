@@ -1,5 +1,5 @@
 // src/components/pages/Marketplace.tsx
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { ethers } from "ethers";
 import { abiBond } from "../utils/bondExchangeABI";
@@ -13,43 +13,78 @@ import {
   Th,
   Td,
   Button,
-  Input,
 } from "@chakra-ui/react";
+import BondModal from "../molecules/bondModal";
 
 const Marketplace: React.FC = () => {
-  const [projectToken2, setProjectToken2] = useState("");
-  const getTokenDetails = async (tokenAddress: string) => {
-    try {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      const contract = new ethers.Contract(
-        "0xcD0B16Ef43eD4213bd3FFAB27170101F1b237f17",
-        abiBond,
-        signer
-      );
-      const tx = await contract.getTokenDetails(tokenAddress);
+  const [projectToken2, setProjectToken2] = useState(
+    "0xc9483ca310ea13d4248620e9d1e1eb935edb8765"
+  );
 
-      console.log("Token details get successfully", tx);
-    } catch (error) {
-      console.log("Error getting token details:", error);
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    async function getAllBonds() {
+      try {
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+        const contract = new ethers.Contract(
+          "0x5Cf4EaF7dF69440671cB38A06a60EBB0ff86618c", // dirección del contrato
+          abiBond,
+          signer
+        );
+        // Call the getAllBonds function
+        const bonds = await contract.getAllBonds();
+        // Extract the target objects from the Proxy
+        const extractedBonds = bonds.map((bond) => ({
+          address1: bond[0],
+          value1: bond[1],
+          address2: bond[2],
+          value2: bond[3],
+          value3: bond[4],
+        }));
+
+        // Format the extracted data into the required string format
+        const formattedData = extractedBonds
+          .map(
+            (bond) =>
+              `${bond.address1},${bond.value1},${bond.address2},${bond.value2},${bond.value3}`
+          )
+          .join(",");
+
+        setData({
+          "0": `tuple(address,uint256,address,uint256,uint256)[]: ${formattedData}`,
+        });
+      } catch (error) {
+        console.error("Error fetching bonds:", error);
+      }
     }
+
+    getAllBonds();
+  }, []);
+  const parseBondsData = (data) => {
+    if (!data || !data["0"]) {
+      return [];
+    }
+
+    const bondsString = data["0"];
+    const bondsArray = bondsString.split(":")[1].split(",");
+
+    const bonds = [];
+    for (let i = 0; i < bondsArray.length; i += 5) {
+      bonds.push({
+        address1: bondsArray[i],
+        value1: bondsArray[i + 1],
+        address2: bondsArray[i + 2],
+        value2: bondsArray[i + 3],
+        value3: bondsArray[i + 4],
+      });
+    }
+
+    return bonds;
   };
-  const markets = [
-    {
-      id: 1,
-      name: "$pToken",
-      price: "SXXX",
-      ecosystem: "Kakarot",
-      vesting: "7 days",
-    },
-    {
-      id: 2,
-      name: "Ekubo",
-      price: "SXXX",
-      ecosystem: "Starknet",
-      vesting: "15 days",
-    },
-  ];
+
+  const bonds = parseBondsData(data);
 
   return (
     <Box padding="10.5rem">
@@ -65,36 +100,27 @@ const Marketplace: React.FC = () => {
       >
         <Thead>
           <Tr>
-            <Th>Bond</Th>
+            <Th>Bond Address</Th>
             <Th>Bond Price</Th>
+            <Th>Tokens Available</Th>
             <Th>Blockchain</Th>
-            <Th>Vesting</Th>
-            <Th></Th> {/* For the view more button */}
+            <Th></Th>
+            {/* For the view more button */}
           </Tr>
         </Thead>
         <Tbody>
-          {markets.map((market) => (
-            <Tr key={market.id}>
-              <Td>{market.name}</Td>
-              <Td>{market.price}</Td>
-              <Td>{market.ecosystem}</Td>
-              <Td>{market.vesting}</Td>
+          {bonds.map((bond, index) => (
+            <Tr key={index}>
+              <Td>{bond.address1}</Td>
+              <Td>{bond.value1}</Td>
+              <Td>{bond.value2}</Td>
+              <Td>{bond.value3}</Td>
               <Td>
-                <Button colorScheme="teal">View more</Button>
+                <BondModal />
               </Td>
             </Tr>
           ))}
         </Tbody>
-        <Box textAlign="center">
-          <Input
-            placeholder="Token Address"
-            value={projectToken2}
-            onChange={(e) => setProjectToken2(e.target.value)}
-          />
-          <Button onClick={() => getTokenDetails(projectToken2)}>
-            getBondDetails
-          </Button>
-        </Box>
       </Table>
     </Box>
   );

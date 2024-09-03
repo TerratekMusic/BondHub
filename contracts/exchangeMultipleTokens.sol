@@ -18,9 +18,12 @@ contract BondExchange {
         address tokenAddress;
         uint256 balance;
     }
-     mapping(address => BondInfo) public tokenDetails;
+
+    mapping(address => BondInfo) public tokenDetails;
     mapping(address => mapping(address => uint256)) public balances;
     mapping(address => mapping(address => uint256)) public lockTimes;
+
+    address[] public tokenAddresses;
 
     event BondPurchased(address indexed buyer, address indexed token, uint256 amount);
     event TokensWithdrawn(address indexed user, address indexed token, uint256 amount);
@@ -34,6 +37,11 @@ contract BondExchange {
 
     
     function setTokenDetails(address _tokenAddress, uint256 _tokenPrice,  uint256 _tokenAmount) public payable {
+            
+              // Add the token address to the array if it's not already present
+            if (tokenDetails[_tokenAddress].tokenAddress == address(0)) {
+                    tokenAddresses.push(_tokenAddress);
+                }
             // Transfer the specified amount of tokens from the msg.sender to the contract
             require(IERC20(_tokenAddress).transferFrom(msg.sender, address(this), _tokenAmount), "Token transfer failed");
         
@@ -115,4 +123,14 @@ contract BondExchange {
 
         payable(msg.sender).transfer(amount);
     }
+
+     function getAllBonds() public view returns (BondInfo[] memory) {
+        BondInfo[] memory bonds = new BondInfo[](tokenAddresses.length);
+        for (uint256 i = 0; i < tokenAddresses.length; i++) {
+            bonds[i] = tokenDetails[tokenAddresses[i]];
+        }
+        return bonds;
+    }
+
+
 }

@@ -26,9 +26,9 @@ const MarketLab: React.FC = () => {
   const [quantity, setQuantity] = useState("");
   const [payoutToken, setPayoutToken] = useState("ETH");
   const [vestingPeriod, setVestingPeriod] = useState("7 days");
-  const [tokenPrice, setTokenPrice] = useState(0);
+  const [tokenPrice, setTokenPrice] = useState("");
   const [treasuryAddress, setTreasuryAddress] = useState("");
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState<number>();
   const [selectedTab, setSelectedTab] = useState(0);
   const [provider, setProvider] = useState<any>();
   const [signer, setSigner] = useState<any>();
@@ -70,14 +70,14 @@ const MarketLab: React.FC = () => {
 
   const setTokenDetails = async (
     tokenAddress: string,
-    tokenPrice: number,
-    tokenAmount: number
+    tokenPrice: string,
+    tokenAmount: string
   ) => {
     try {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       const contract = new ethers.Contract(
-        "0xcD0B16Ef43eD4213bd3FFAB27170101F1b237f17",
+        "0x5Cf4EaF7dF69440671cB38A06a60EBB0ff86618c",
         abiBond,
         signer
       );
@@ -85,7 +85,7 @@ const MarketLab: React.FC = () => {
         tokenAddress,
         tokenPrice,
         tokenAmount,
-        { value: "0", gasLimit: 160000 }
+        { value: "0", gasLimit: 220000 }
       );
       await tx.wait();
       console.log("Token details set successfully");
@@ -180,7 +180,7 @@ const MarketLab: React.FC = () => {
                   <Button
                     onClick={() =>
                       approveTokens(
-                        "0xcD0B16Ef43eD4213bd3FFAB27170101F1b237f17",
+                        "0x5Cf4EaF7dF69440671cB38A06a60EBB0ff86618c",
                         quantity
                       )
                     }
@@ -249,7 +249,7 @@ const MarketLab: React.FC = () => {
                   <Input
                     type="number"
                     value={tokenPrice}
-                    onChange={(e) => setTokenPrice(Number(e.target.value))}
+                    onChange={(e) => setTokenPrice(e.target.value)}
                     bg="transparent"
                     color="white"
                     borderRadius="5px"
@@ -261,7 +261,7 @@ const MarketLab: React.FC = () => {
                     }}
                   />
                 </Box>
-                <Box>
+                {/* <Box>
                   <Text as="h6" mb="2">
                     Treasury Address
                   </Text>
@@ -277,44 +277,14 @@ const MarketLab: React.FC = () => {
                     value={treasuryAddress}
                     onChange={(e) => setTreasuryAddress(e.target.value)}
                   />
-                </Box>
+                </Box> */}
                 <Box textAlign="center">
-                  <Text as="h6" mb="2">
-                    Token Address
-                  </Text>
-                  <Input
-                    bg="transparent"
-                    color="white"
-                    border="1px solid white"
-                    _hover={{ borderColor: "gray.500" }}
-                    _focus={{
-                      borderColor: "white",
-                      boxShadow: "0 0 0 1px white",
-                    }}
-                    value={projectToken}
-                    onChange={(e) => setProjectToken(e.target.value)}
-                  />
-                  <Text as="h6" mb="2">
-                    amount
-                  </Text>
-                  <Input
-                    type="number"
-                    value={amount}
-                    onChange={(e) => setAmount(Number(e.target.value))}
-                    bg="transparent"
-                    color="white"
-                    borderRadius="5px"
-                    border="1px solid white"
-                    outline="none"
-                    _focus={{
-                      borderColor: "white",
-                      boxShadow: "0 0 0 1px white",
-                    }}
-                  />
                   <Button
                     colorScheme="yellow"
                     mt="4"
-                    onClick={() => setTokenDetails(projectToken, 3, 450)}
+                    onClick={() =>
+                      setTokenDetails(projectToken, tokenPrice, quantity)
+                    }
                   >
                     Launch Market
                   </Button>
