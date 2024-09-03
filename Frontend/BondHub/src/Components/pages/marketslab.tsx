@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ethers } from "ethers";
 import {
   Box,
@@ -29,15 +29,26 @@ const MarketLab: React.FC = () => {
   const [tokenPrice, setTokenPrice] = useState(0);
   const [treasuryAddress, setTreasuryAddress] = useState("");
   const [amount, setAmount] = useState(0);
-  const [selectedTab, setSelectedTab] = useState(1);
-  const [tokenApproved, setTokenApproved] = useState(false);
+  const [selectedTab, setSelectedTab] = useState(0);
+  const [provider, setProvider] = useState<any>();
+  const [signer, setSigner] = useState<any>();
+  const [address, setAddress] = useState<any>();
 
-  const approveTokens = async (spenderAddress: string, amount: string) => {
-    try {
+  useEffect(() => {
+    async function connectToWallet() {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       const address = await signer.getAddress();
 
+      setProvider(provider);
+      setSigner(signer);
+      setAddress(address);
+    }
+    connectToWallet();
+  }, []);
+
+  const approveTokens = async (spenderAddress: string, amount: string) => {
+    try {
       const contractERC20 = new ethers.Contract(
         projectToken,
         abipToken,
@@ -74,7 +85,7 @@ const MarketLab: React.FC = () => {
         tokenAddress,
         tokenPrice,
         tokenAmount,
-        { value: "0", gasLimit: 100000 }
+        { value: "0", gasLimit: 160000 }
       );
       await tx.wait();
       console.log("Token details set successfully");
