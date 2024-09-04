@@ -1,4 +1,3 @@
-// src/theme.ts
 import { extendTheme } from '@chakra-ui/react';
 
 const theme = extendTheme({
@@ -18,20 +17,19 @@ const theme = extendTheme({
     gradient: {
       background: "linear-gradient(to right, #24243e, #302b63, #0f0c29)",
     },
-    // Colores personalizados asumidos de tu paleta
     custom: {
-      primary: '#4E60AA', // Color principal para botones y elementos destacados
-      secondary: '#303347', // Color secundario para fondos o bordes
-      accent: '#F5A623', // Color de acento para llamadas a la acción
-      muted: '#44556D', // Color para textos menos destacados
-      danger: '#E53E3E', // Color para acciones de peligro o errores
-      success: '#38A169', // Color para acciones exitosas o confirmaciones
-      info: '#3182CE', // Color para información adicional
+      primary: '#4E60AA', 
+      secondary: '#303347', 
+      accent: '#F5A623', 
+      muted: '#44556D', 
+      danger: '#E53E3E', 
+      success: '#38A169', 
+      info: '#3182CE', 
     },
   },
   fonts: {
-    heading: `'Exo 2', sans-serif`, // Exo 2 para los encabezados
-    body: `'Exo 2', sans-serif`, // Exo 2 para el cuerpo del texto
+    heading: `'Exo 2', sans-serif`,
+    body: `'Exo 2', sans-serif`,
   },
   components: {
     Button: {
@@ -172,37 +170,37 @@ const theme = extendTheme({
         fontFamily: `'Exo 2', sans-serif`,
       },
       h1: {
-        fontWeight: '900', // Black
+        fontWeight: '900',
         fontSize: '4rem',
         lineHeight: '1.2',
       },
       h2: {
-        fontWeight: '300', // Extra Bold
+        fontWeight: '300',
         fontSize: '2.2rem',
         lineHeight: '1.3',
       },
       h3: {
-        fontWeight: '700', // Bold
+        fontWeight: '700',
         fontSize: '2.5rem',
         lineHeight: '1.4',
       },
       h4: {
-        fontWeight: '600', // Semi Bold
+        fontWeight: '600',
         fontSize: '2rem',
         lineHeight: '1.5',
       },
       h5: {
-        fontWeight: '500', // Medium
+        fontWeight: '500',
         fontSize: '1.5rem',
         lineHeight: '1.6',
       },
       h6: {
-        fontWeight: '200', // Regular
+        fontWeight: '200',
         fontSize: '1.25rem',
         lineHeight: '1.7',
       },
       p: {
-        fontWeight: '400', // Regular
+        fontWeight: '400',
         fontSize: '1rem',
         lineHeight: '1.8',
       },
