@@ -14,6 +14,7 @@ import {
   Tab,
   TabPanel,
   Center,
+  Spinner,
 } from "@chakra-ui/react";
 import NavBar from "../navbar";
 import { Link } from "react-router-dom";
@@ -27,12 +28,10 @@ const MarketLab: React.FC = () => {
   const [payoutToken, setPayoutToken] = useState("ETH");
   const [vestingPeriod, setVestingPeriod] = useState("7 days");
   const [tokenPrice, setTokenPrice] = useState("");
-  const [treasuryAddress, setTreasuryAddress] = useState("");
-  const [amount, setAmount] = useState<number>();
   const [selectedTab, setSelectedTab] = useState(0);
   const [provider, setProvider] = useState<any>();
   const [signer, setSigner] = useState<any>();
-  const [address, setAddress] = useState<any>();
+  const [isLoading, setIsLoading] = useState(false); // Estado para manejar el spinner
 
   useEffect(() => {
     async function connectToWallet() {
@@ -42,62 +41,43 @@ const MarketLab: React.FC = () => {
 
       setProvider(provider);
       setSigner(signer);
-      setAddress(address);
     }
     connectToWallet();
   }, []);
 
   const approveTokens = async (spenderAddress: string, amount: string) => {
+    setIsLoading(true); // Activa el spinner
     try {
-      const contractERC20 = new ethers.Contract(
-        projectToken,
-        abipToken,
-        signer
-      );
+      const contractERC20 = new ethers.Contract(projectToken, abipToken, signer);
       const tx = await contractERC20.approve(spenderAddress, amount);
       await tx.wait();
       console.log("Tokens approved successfully");
-      // setTokenApproved(true);
       goToNextTab();
     } catch (error) {
       console.error("Error approving tokens:", error);
+    } finally {
+      setIsLoading(false); // Desactiva el spinner
+    }
+  };
+
+  const setTokenDetails = async (tokenAddress: string, tokenPrice: string, tokenAmount: string) => {
+    setIsLoading(true); // Activa el spinner
+    try {
+      const contract = new ethers.Contract("0x5Cf4EaF7dF69440671cB38A06a60EBB0ff86618c", abiBond, signer);
+      const tx = await contract.setTokenDetails(tokenAddress, tokenPrice, tokenAmount, { value: "0", gasLimit: 220000 });
+      await tx.wait();
+      console.log("Token details set successfully");
+      goToNextTab();
+    } catch (error) {
+      console.log("Error setting token details:", error);
+    } finally {
+      setIsLoading(false); // Desactiva el spinner
     }
   };
 
   const goToNextTab = () => {
     setSelectedTab((prevTab) => prevTab + 1);
   };
-
-  const setTokenDetails = async (
-    tokenAddress: string,
-    tokenPrice: string,
-    tokenAmount: string
-  ) => {
-    try {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      const signer = await provider.getSigner();
-      const contract = new ethers.Contract(
-        "0x5Cf4EaF7dF69440671cB38A06a60EBB0ff86618c",
-        abiBond,
-        signer
-      );
-      const tx = await contract.setTokenDetails(
-        tokenAddress,
-        tokenPrice,
-        tokenAmount,
-        { value: "0", gasLimit: 220000 }
-      );
-      await tx.wait();
-      console.log("Token details set successfully");
-      goToNextTab();
-    } catch (error) {
-      console.log("Error setting token details:", error);
-    }
-  };
-
-  console.log("projectToken", projectToken);
-  console.log("price", tokenPrice);
-  console.log("amount", amount);
 
   return (
     <Box minH="100vh" color="white" padding="2rem">
@@ -110,8 +90,8 @@ const MarketLab: React.FC = () => {
         <Tabs index={selectedTab} isFitted variant="enclosed">
           <TabList mb="1em">
             <Tab>Step 1</Tab>
-            {/* <Tab>Step 2</Tab>
-            <Tab>Step 3</Tab> */}
+            <Tab isDisabled={selectedTab < 1}>Step 2</Tab>
+            <Tab isDisabled={selectedTab < 2}>Step 3</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
@@ -177,21 +157,22 @@ const MarketLab: React.FC = () => {
                   />
                 </Box>
                 <Box textAlign="center">
-                  <Button
-                    onClick={() =>
-                      approveTokens(
-                        "0x5Cf4EaF7dF69440671cB38A06a60EBB0ff86618c",
-                        quantity
-                      )
-                    }
-                    colorScheme="yellow"
-                    mt="4"
-                  >
-                    Approve
-                  </Button>
+                  {isLoading ? (
+                    <Spinner size="lg" color="yellow.500" /> // Spinner mientras carga
+                  ) : (
+                    <Button
+                      onClick={() => approveTokens("0x5Cf4EaF7dF69440671cB38A06a60EBB0ff86618c", quantity)}
+                      colorScheme="yellow"
+                      mt="4"
+                      isDisabled={isLoading} // Desactiva el botón mientras carga
+                    >
+                      Approve
+                    </Button>
+                  )}
                 </Box>
               </VStack>
             </TabPanel>
+
             <TabPanel>
               <VStack spacing="6" align="stretch">
                 <Box>
@@ -261,36 +242,23 @@ const MarketLab: React.FC = () => {
                     }}
                   />
                 </Box>
-                {/* <Box>
-                  <Text as="h6" mb="2">
-                    Treasury Address
-                  </Text>
-                  <Input
-                    bg="transparent"
-                    color="white"
-                    border="1px solid white"
-                    _hover={{ borderColor: "gray.500" }}
-                    _focus={{
-                      borderColor: "white",
-                      boxShadow: "0 0 0 1px white",
-                    }}
-                    value={treasuryAddress}
-                    onChange={(e) => setTreasuryAddress(e.target.value)}
-                  />
-                </Box> */}
                 <Box textAlign="center">
-                  <Button
-                    colorScheme="yellow"
-                    mt="4"
-                    onClick={() =>
-                      setTokenDetails(projectToken, tokenPrice, quantity)
-                    }
-                  >
-                    Launch Market
-                  </Button>
+                  {isLoading ? (
+                    <Spinner size="lg" color="yellow.500" /> // Spinner mientras carga
+                  ) : (
+                    <Button
+                      colorScheme="yellow"
+                      mt="4"
+                      onClick={() => setTokenDetails(projectToken, tokenPrice, quantity)}
+                      isDisabled={isLoading} // Desactiva el botón mientras carga
+                    >
+                      Launch Market
+                    </Button>
+                  )}
                 </Box>
               </VStack>
             </TabPanel>
+
             <TabPanel>
               <Center flexDirection="column" height="100%">
                 <Heading as="h3" mb="2rem" color="green.400">
