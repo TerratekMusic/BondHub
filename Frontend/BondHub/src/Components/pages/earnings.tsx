@@ -1,11 +1,39 @@
-import React from 'react';
-import { Box, Heading, Table, Thead, Tbody, Tr, Th, Td, Button } from '@chakra-ui/react';
-import NavBar from '../navbar';  // Asegúrate de que la ruta de importación sea correcta
+import React, { useState } from 'react';
+import {
+  Box,
+  Heading,
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Text,
+  useDisclosure,
+} from '@chakra-ui/react';
+import NavBar from '../navbar'; // Asegúrate de que la ruta de importación sea correcta
 
 const Earnings: React.FC = () => {
-  const handleClaim = (market: string) => {
-    console.log(`Claiming earnings for ${market}`);
-    // Aquí iría la lógica para reclamar las ganancias del bono
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [selectedMarket, setSelectedMarket] = useState<string | null>(null);
+  const [selectedAsset, setSelectedAsset] = useState<string | null>(null);
+  const [selectedAmount, setSelectedAmount] = useState<string | null>(null);
+  const [selectedTreasury, setSelectedTreasury] = useState<string | null>(null);
+
+  const handleClaim = (market: string, asset: string, amount: string, treasury: string) => {
+    setSelectedMarket(market);
+    setSelectedAsset(asset);
+    setSelectedAmount(amount);
+    setSelectedTreasury(treasury);
+    onOpen();
   };
 
   return (
@@ -35,8 +63,8 @@ const Earnings: React.FC = () => {
               <Td>0x00000</Td>
               <Td>
                 <Button
-                  colorScheme="brand" 
-                  onClick={() => handleClaim('$pToken')}
+                  colorScheme="brand"
+                  onClick={() => handleClaim('$pToken', '$ETH', '0.01', '0x00000')}
                 >
                   Claim
                 </Button>
@@ -51,7 +79,7 @@ const Earnings: React.FC = () => {
               <Td>
                 <Button
                   colorScheme="brand"
-                  onClick={() => handleClaim('$EKUBO')}
+                  onClick={() => handleClaim('$EKUBO', '$STRK', '1000', '0x00000')}
                 >
                   Claim
                 </Button>
@@ -60,6 +88,34 @@ const Earnings: React.FC = () => {
           </Tbody>
         </Table>
       </Box>
+
+      {/* Modal for Claiming Earnings */}
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Claim Earnings</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text fontWeight="bold">Market</Text>
+            <Text mb="1rem">{selectedMarket}</Text>
+
+            <Text fontWeight="bold">Asset to claim</Text>
+            <Text mb="1rem">{selectedAsset}</Text>
+
+            <Text fontWeight="bold">Total Amount</Text>
+            <Text mb="1rem">{selectedAmount}</Text>
+
+            <Text fontWeight="bold">Treasury Address</Text>
+            <Text mb="1rem">{selectedTreasury}</Text>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3}>
+              Claim
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };

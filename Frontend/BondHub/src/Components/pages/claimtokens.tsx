@@ -1,11 +1,20 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Box, Heading, Table, Thead, Tbody, Tr, Th, Td, Button } from '@chakra-ui/react';
 import NavBar from '../navbar';  // Asegúrate de que la ruta de importación sea correcta
+import ClaimModal from '../molecules/claimModal';  // Asegúrate de que la ruta de importación sea correcta
 
 const ClaimTokens: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedToken, setSelectedToken] = useState<string | null>(null);
+
   const handleClaim = (token: string) => {
-    console.log(`Claiming ${token}`);
-    // Aquí iría la lógica para reclamar el token
+    setSelectedToken(token);
+    setIsModalOpen(true);  // Abrir el modal
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedToken(null);
   };
 
   return (
@@ -31,9 +40,8 @@ const ClaimTokens: React.FC = () => {
               <Td>Available</Td>
               <Td>
                 <Button
-                  colorScheme="brand" 
+                  colorScheme="brand"
                   onClick={() => handleClaim('$pToken')}
-                  isDisabled={false} // Puedes ajustar esta propiedad según el estado
                 >
                   Claim
                 </Button>
@@ -47,7 +55,7 @@ const ClaimTokens: React.FC = () => {
                 <Button
                   colorScheme="brand"
                   onClick={() => handleClaim('$EKUBO')}
-                  isDisabled={true} // Ejemplo de botón deshabilitado
+                  isDisabled={true} // Botón deshabilitado si está bloqueado
                 >
                   Claim
                 </Button>
@@ -56,6 +64,11 @@ const ClaimTokens: React.FC = () => {
           </Tbody>
         </Table>
       </Box>
+
+      {/* Modal de claim */}
+      {isModalOpen && selectedToken && (
+        <ClaimModal token={selectedToken} onClose={closeModal} />
+      )}
     </Box>
   );
 };
