@@ -25,6 +25,7 @@ export default function EarningsModal() {
       </Button>
 
       <Modal isOpen={isOpen} onClose={onClose} isCentered size="lg">
+        <ModalOverlay backdropFilter="blur(10px)" />
         <ModalContent bgColor="#2d3748">
           <ModalHeader bgColor="#2d3748">
             <Text fontSize="lg" fontWeight="bold">
