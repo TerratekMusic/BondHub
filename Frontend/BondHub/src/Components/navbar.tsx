@@ -56,7 +56,7 @@ const NavBar: React.FC = () => {
         {" "}
         {/* Sección del logo */}
         <img
-          src="/src/assets/images/logo.png"
+          src="/public/logo.png"
           alt="Logo"
           style={{ height: "50px" }}
         />

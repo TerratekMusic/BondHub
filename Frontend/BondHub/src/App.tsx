@@ -7,7 +7,7 @@ import Navbar from "./Components/navbar";
 import Home from "./Components/pages/home";
 import MarketLab from "./Components/pages/marketslab";
 import Marketplace from "./Components/pages/marketplace";
-import ClaimTokens from "./Components/pages/ClaimTokens";
+import ClaimTokens from "./Components/pages/claimtokens";
 import Earnings from "./Components/pages/earnings";
 import TokenFaucet from "./Components/pages/tokenfaucet";
 
