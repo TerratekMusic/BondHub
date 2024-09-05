@@ -8,6 +8,7 @@ import Home from "./Components/pages/home";
 import MarketLab from "./Components/pages/marketslab";
 import Marketplace from "./Components/pages/marketplace";
 import Earnings from "./Components/pages/earnings";
+import ClaimTokens from "./Components/pages/claimtokens";
 import TokenFaucet from "./Components/pages/tokenfaucet";
 
 const App: React.FC = () => {
