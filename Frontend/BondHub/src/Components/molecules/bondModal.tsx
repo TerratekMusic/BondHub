@@ -1,3 +1,6 @@
+import React, { useState } from "react";
+import { ethers } from "ethers";
+import { Link } from "react-router-dom";
 import {
   Modal,
   ModalOverlay,
@@ -13,36 +16,57 @@ import {
   GridItem,
   Input,
   Divider,
+  Spinner,
+  useDisclosure,
+  VStack
 } from "@chakra-ui/react";
 import { abiBond } from "../utils/bondExchangeABI";
-import { ethers } from "ethers";
-import React from "react";
-import { useDisclosure } from "@chakra-ui/react"; // Asegúrate de importar useDisclosure
 
 interface BondModalProps {
   price: number;
   tokenAddress: string;
   tokenAvailable: number;
+  bondName: string;
+  discountPercentage: number;
 }
 
 const BondModal: React.FC<BondModalProps> = ({
   price,
   tokenAddress,
   tokenAvailable,
+  bondName,
+  discountPercentage
 }) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [amount, setAmount] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [txStatus, setTxStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const OverlayOne = () => (
     <ModalOverlay bg="blackAlpha.800" backdropFilter="blur(10px)" />
   );
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [overlay, setOverlay] = React.useState(<OverlayOne />);
-  const [amount, setAmount] = React.useState("");
-  const [token, setToken] = React.useState("");
+  const handleAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setAmount(e.target.value);
+  };
 
-  // Define the function to call buyBond
-  async function callBuyBond(tokenAddress, amount) {
+  const calculateTotalAmount = () => {
+    if (!amount || isNaN(Number(amount))) return "0";
+    return (Number(amount) * price).toFixed(4);
+  };
+
+  const callBuyBond = async () => {
+    if (!amount || isNaN(Number(amount))) {
+      alert("Please enter a valid amount");
+      return;
+    }
+
+    setIsLoading(true);
+    setTxStatus('idle');
+    setErrorMessage(null);
+
     try {
-      console.log("Calling buyBond");
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
       const contractBONDS = new ethers.Contract(
@@ -51,44 +75,45 @@ const BondModal: React.FC<BondModalProps> = ({
         signer
       );
 
-      setToken(tokenAddress);
+      const amountInWei = ethers.parseEther(amount);
+      
+      console.log("Amount in wei:", amountInWei.toString());
+      console.log("Token address:", tokenAddress);
 
-      // Validate and checksum the token address
-      // const checksummedAddress = ethers.utils.getAddress(tokenAddress);
-
-      const tx = await contractBONDS.buyBond(token, {
-        value: amount,
+      const tx = await contractBONDS.buyBond(tokenAddress, {
+        value: amountInWei
       });
-      await tx.wait();
+
       console.log("Transaction hash:", tx.hash);
+      
       await tx.wait();
       console.log("Transaction confirmed");
+      setTxStatus('success');
     } catch (error) {
       console.error("Error calling buyBond:", error);
+      setTxStatus('error');
+      if (error.reason) {
+        console.error("Error reason:", error.reason);
+        setErrorMessage(error.reason);
+      } else if (error.message) {
+        setErrorMessage(error.message);
+      }
+      if (error.code) console.error("Error code:", error.code);
+      if (error.transaction) console.error("Failed transaction:", error.transaction);
+    } finally {
+      setIsLoading(false);
     }
-  }
-
-  console.log("Amount:", amount);
-  console.log("Token Address:", tokenAddress);
+  };
 
   return (
     <>
-      <Button
-        onClick={() => {
-          setOverlay(<OverlayOne />);
-          onOpen();
-        }}
-      >
-        View Bond
-      </Button>
+      <Button onClick={onOpen}>View Bond</Button>
 
       <Modal size="lg" isCentered isOpen={isOpen} onClose={onClose}>
-        {overlay}
+        <OverlayOne />
         <ModalContent bgColor="#2d3748">
           <ModalHeader>
-            <Heading as="h3" size="lg">
-              BondName
-            </Heading>
+            <Heading as="h3" size="lg">{bondName}</Heading>
             <Text>{tokenAddress}</Text>
           </ModalHeader>
           <ModalCloseButton />
@@ -104,11 +129,11 @@ const BondModal: React.FC<BondModalProps> = ({
               </GridItem>
               <GridItem>
                 <Text fontWeight="bold">Price</Text>
-                <Text>{price}</Text>
+                <Text>{price} ETH</Text>
               </GridItem>
               <GridItem>
                 <Text fontWeight="bold">% Discount</Text>
-                <Text>X%</Text>
+                <Text>{discountPercentage}%</Text>
               </GridItem>
               <GridItem>
                 <Text fontWeight="bold">Vesting</Text>
@@ -130,31 +155,53 @@ const BondModal: React.FC<BondModalProps> = ({
                   bg="gray.700"
                   color="white"
                   borderRadius="md"
+                  value={amount}
+                  onChange={handleAmountChange}
                   _hover={{ borderColor: "gray.500" }}
                   _focus={{
                     borderColor: "white",
                     boxShadow: "0 0 0 1px white",
                   }}
-                  onChange={(e) => setAmount(e.target.value)}
                 />
               </GridItem>
               <GridItem>
                 <Text fontWeight="bold">Total Amount</Text>
-                <Text>X</Text>
+                <Text>{calculateTotalAmount()} ETH</Text>
               </GridItem>
             </Grid>
           </ModalBody>
 
-          <ModalFooter justifyContent="flex-start">
-            {" "}
-            {/* Alinea a la izquierda */}
-            <Button
-              onClick={() => callBuyBond(tokenAddress, amount)}
-              colorScheme="blue"
-              mr={3}
-            >
-              Buy Bond
-            </Button>
+          <ModalFooter>
+            <VStack align="stretch" width="100%">
+              {isLoading ? (
+                <Spinner size="lg" color="yellow.500" alignSelf="center" />
+              ) : txStatus === 'success' ? (
+                <>
+                  <Button colorScheme="green" width="100%">
+                    <Link to="/claimtokens">View My Bonds</Link>
+                  </Button>
+                  <Text color="green.400" fontWeight="bold" alignSelf="center">
+                    Transaction Successful!
+                  </Text>
+                </>
+              ) : (
+                <>
+                  <Button
+                    onClick={callBuyBond}
+                    colorScheme="blue"
+                    width="100%"
+                    isDisabled={isLoading || !amount}
+                  >
+                    Buy Bond
+                  </Button>
+                  {txStatus === 'error' && errorMessage && (
+                    <Text color="red.400" fontWeight="bold" alignSelf="center">
+                      Error: {errorMessage}
+                    </Text>
+                  )}
+                </>
+              )}
+            </VStack>
           </ModalFooter>
         </ModalContent>
       </Modal>
