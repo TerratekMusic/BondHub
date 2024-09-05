@@ -116,7 +116,11 @@ const Marketplace: React.FC = () => {
               <Td>{bond.value2}</Td>
               <Td>{bond.value3}</Td>
               <Td>
-                <BondModal />
+                <BondModal
+                  price={23}
+                  tokenAddress={bond.address1}
+                  tokenAvailable={bond.value2}
+                />
               </Td>
             </Tr>
           ))}
