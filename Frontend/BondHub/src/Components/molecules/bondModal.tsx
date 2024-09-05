@@ -38,9 +38,11 @@ export default function BondModal() {
 
       <Modal size="lg" isCentered isOpen={isOpen} onClose={onClose}>
         {overlay}
-        <ModalContent>
+        <ModalContent bgColor="#2d3748">
           <ModalHeader>
-            <Heading as="h3" size="lg">Bond Name</Heading>
+            <Heading as="h3" size="lg">
+              Bond Name
+            </Heading>
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -78,7 +80,10 @@ export default function BondModal() {
                   color="white"
                   borderRadius="md"
                   _hover={{ borderColor: "gray.500" }}
-                  _focus={{ borderColor: "white", boxShadow: "0 0 0 1px white" }}
+                  _focus={{
+                    borderColor: "white",
+                    boxShadow: "0 0 0 1px white",
+                  }}
                 />
               </GridItem>
               <GridItem>
@@ -88,7 +93,9 @@ export default function BondModal() {
             </Grid>
           </ModalBody>
 
-          <ModalFooter justifyContent="flex-start"> {/* Alinea a la izquierda */}
+          <ModalFooter justifyContent="flex-start">
+            {" "}
+            {/* Alinea a la izquierda */}
             <Button colorScheme="blue" mr={3}>
               Buy Bond
             </Button>
