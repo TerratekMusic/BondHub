@@ -18,7 +18,7 @@ import {
   Divider,
   Spinner,
   useDisclosure,
-  VStack
+  VStack,
 } from "@chakra-ui/react";
 import { abiBond } from "../utils/bondExchangeABI";
 
@@ -26,21 +26,19 @@ interface BondModalProps {
   price: number;
   tokenAddress: string;
   tokenAvailable: number;
-  bondName: string;
-  discountPercentage: number;
 }
 
 const BondModal: React.FC<BondModalProps> = ({
   price,
   tokenAddress,
   tokenAvailable,
-  bondName,
-  discountPercentage
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [amount, setAmount] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [txStatus, setTxStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [txStatus, setTxStatus] = useState<"idle" | "success" | "error">(
+    "idle"
+  );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const OverlayOne = () => (
@@ -63,7 +61,7 @@ const BondModal: React.FC<BondModalProps> = ({
     }
 
     setIsLoading(true);
-    setTxStatus('idle');
+    setTxStatus("idle");
     setErrorMessage(null);
 
     try {
@@ -76,22 +74,22 @@ const BondModal: React.FC<BondModalProps> = ({
       );
 
       const amountInWei = ethers.parseEther(amount);
-      
+
       console.log("Amount in wei:", amountInWei.toString());
       console.log("Token address:", tokenAddress);
 
       const tx = await contractBONDS.buyBond(tokenAddress, {
-        value: amountInWei
+        value: amount,
       });
 
       console.log("Transaction hash:", tx.hash);
-      
+
       await tx.wait();
       console.log("Transaction confirmed");
-      setTxStatus('success');
+      setTxStatus("success");
     } catch (error) {
       console.error("Error calling buyBond:", error);
-      setTxStatus('error');
+      setTxStatus("error");
       if (error.reason) {
         console.error("Error reason:", error.reason);
         setErrorMessage(error.reason);
@@ -99,7 +97,8 @@ const BondModal: React.FC<BondModalProps> = ({
         setErrorMessage(error.message);
       }
       if (error.code) console.error("Error code:", error.code);
-      if (error.transaction) console.error("Failed transaction:", error.transaction);
+      if (error.transaction)
+        console.error("Failed transaction:", error.transaction);
     } finally {
       setIsLoading(false);
     }
@@ -113,7 +112,9 @@ const BondModal: React.FC<BondModalProps> = ({
         <OverlayOne />
         <ModalContent bgColor="#2d3748">
           <ModalHeader>
-            <Heading as="h3" size="lg">{bondName}</Heading>
+            <Heading as="h3" size="lg">
+              BondName
+            </Heading>
             <Text>{tokenAddress}</Text>
           </ModalHeader>
           <ModalCloseButton />
@@ -129,11 +130,11 @@ const BondModal: React.FC<BondModalProps> = ({
               </GridItem>
               <GridItem>
                 <Text fontWeight="bold">Price</Text>
-                <Text>{price} ETH</Text>
+                <Text>{price} Gwei</Text>
               </GridItem>
               <GridItem>
                 <Text fontWeight="bold">% Discount</Text>
-                <Text>{discountPercentage}%</Text>
+                <Text>30%</Text>
               </GridItem>
               <GridItem>
                 <Text fontWeight="bold">Vesting</Text>
@@ -166,7 +167,7 @@ const BondModal: React.FC<BondModalProps> = ({
               </GridItem>
               <GridItem>
                 <Text fontWeight="bold">Total Amount</Text>
-                <Text>{calculateTotalAmount()} ETH</Text>
+                <Text>{calculateTotalAmount()} gWei</Text>
               </GridItem>
             </Grid>
           </ModalBody>
@@ -175,7 +176,7 @@ const BondModal: React.FC<BondModalProps> = ({
             <VStack align="stretch" width="100%">
               {isLoading ? (
                 <Spinner size="lg" color="yellow.500" alignSelf="center" />
-              ) : txStatus === 'success' ? (
+              ) : txStatus === "success" ? (
                 <>
                   <Button colorScheme="green" width="100%">
                     <Link to="/claimtokens">View My Bonds</Link>
@@ -194,7 +195,7 @@ const BondModal: React.FC<BondModalProps> = ({
                   >
                     Buy Bond
                   </Button>
-                  {txStatus === 'error' && errorMessage && (
+                  {txStatus === "error" && errorMessage && (
                     <Text color="red.400" fontWeight="bold" alignSelf="center">
                       Error: {errorMessage}
                     </Text>

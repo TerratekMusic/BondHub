@@ -103,7 +103,7 @@ const Marketplace: React.FC = () => {
             <Th>Bond Address</Th>
             <Th>Bond Price</Th>
             <Th>Tokens Available</Th>
-            <Th>Blockchain</Th>
+            <Th>Total gWei Collected</Th>
             <Th></Th>
             {/* For the view more button */}
           </Tr>
@@ -117,7 +117,7 @@ const Marketplace: React.FC = () => {
               <Td>{bond.value3}</Td>
               <Td>
                 <BondModal
-                  price={23}
+                  price={bond.value1}
                   tokenAddress={bond.address1}
                   tokenAvailable={bond.value2}
                 />
