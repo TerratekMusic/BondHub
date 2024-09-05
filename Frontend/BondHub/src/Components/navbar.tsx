@@ -30,7 +30,6 @@ const NavBar: React.FC = () => {
   };
 
   const [address, setAddress] = React.useState<string>("");
-  const [contract, setContract] = React.useState<ethers.Contract | null>(null);
 
   const loginWithMetaMask = async () => {
     const provider = new ethers.BrowserProvider(window.ethereum);

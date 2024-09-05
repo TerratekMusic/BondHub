@@ -12,7 +12,7 @@ import {
   GridItem,
   Divider,
 } from "@chakra-ui/react";
-import React from "react";
+
 import { useDisclosure } from "@chakra-ui/react"; // Asegúrate de importar useDisclosure
 
 export default function EarningsModal() {

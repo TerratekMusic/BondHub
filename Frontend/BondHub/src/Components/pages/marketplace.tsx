@@ -12,14 +12,13 @@ import {
   Tr,
   Th,
   Td,
-  Button,
 } from "@chakra-ui/react";
 import BondModal from "../molecules/bondModal";
 
 const Marketplace: React.FC = () => {
-  const [projectToken2, setProjectToken2] = useState(
-    "0xc9483ca310ea13d4248620e9d1e1eb935edb8765"
-  );
+  // const [projectToken2, setProjectToken2] = useState(
+  //   "0xc9483ca310ea13d4248620e9d1e1eb935edb8765"
+  // );
 
   const [data, setData] = useState({});
 

@@ -29,7 +29,6 @@ const MarketLab: React.FC = () => {
   const [vestingPeriod, setVestingPeriod] = useState("7 days");
   const [tokenPrice, setTokenPrice] = useState("");
   const [selectedTab, setSelectedTab] = useState(0);
-  const [provider, setProvider] = useState<any>();
   const [signer, setSigner] = useState<any>();
   const [isLoading, setIsLoading] = useState(false); // Estado para manejar el spinner
 
@@ -37,9 +36,7 @@ const MarketLab: React.FC = () => {
     async function connectToWallet() {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
-      const address = await signer.getAddress();
 
-      setProvider(provider);
       setSigner(signer);
     }
     connectToWallet();
@@ -48,7 +45,11 @@ const MarketLab: React.FC = () => {
   const approveTokens = async (spenderAddress: string, amount: string) => {
     setIsLoading(true); // Activa el spinner
     try {
-      const contractERC20 = new ethers.Contract(projectToken, abipToken, signer);
+      const contractERC20 = new ethers.Contract(
+        projectToken,
+        abipToken,
+        signer
+      );
       const tx = await contractERC20.approve(spenderAddress, amount);
       await tx.wait();
       console.log("Tokens approved successfully");
@@ -60,11 +61,24 @@ const MarketLab: React.FC = () => {
     }
   };
 
-  const setTokenDetails = async (tokenAddress: string, tokenPrice: string, tokenAmount: string) => {
+  const setTokenDetails = async (
+    tokenAddress: string,
+    tokenPrice: string,
+    tokenAmount: string
+  ) => {
     setIsLoading(true); // Activa el spinner
     try {
-      const contract = new ethers.Contract("0x5Cf4EaF7dF69440671cB38A06a60EBB0ff86618c", abiBond, signer);
-      const tx = await contract.setTokenDetails(tokenAddress, tokenPrice, tokenAmount, { value: "0", gasLimit: 220000 });
+      const contract = new ethers.Contract(
+        "0x5Cf4EaF7dF69440671cB38A06a60EBB0ff86618c",
+        abiBond,
+        signer
+      );
+      const tx = await contract.setTokenDetails(
+        tokenAddress,
+        tokenPrice,
+        tokenAmount,
+        { value: "0", gasLimit: 220000 }
+      );
       await tx.wait();
       console.log("Token details set successfully");
       goToNextTab();
@@ -161,7 +175,12 @@ const MarketLab: React.FC = () => {
                     <Spinner size="lg" color="yellow.500" /> // Spinner mientras carga
                   ) : (
                     <Button
-                      onClick={() => approveTokens("0x5Cf4EaF7dF69440671cB38A06a60EBB0ff86618c", quantity)}
+                      onClick={() =>
+                        approveTokens(
+                          "0x5Cf4EaF7dF69440671cB38A06a60EBB0ff86618c",
+                          quantity
+                        )
+                      }
                       colorScheme="yellow"
                       mt="4"
                       isDisabled={isLoading} // Desactiva el botón mientras carga
@@ -249,7 +268,9 @@ const MarketLab: React.FC = () => {
                     <Button
                       colorScheme="yellow"
                       mt="4"
-                      onClick={() => setTokenDetails(projectToken, tokenPrice, quantity)}
+                      onClick={() =>
+                        setTokenDetails(projectToken, tokenPrice, quantity)
+                      }
                       isDisabled={isLoading} // Desactiva el botón mientras carga
                     >
                       Launch Market

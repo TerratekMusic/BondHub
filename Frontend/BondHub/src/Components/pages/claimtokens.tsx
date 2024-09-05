@@ -12,29 +12,29 @@ import {
 } from "@chakra-ui/react";
 import NavBar from "../navbar"; // Asegúrate de que la ruta de importación sea correcta
 import ClaimModal from "../molecules/claimModal";
-import { abiBond } from "../utils/bondExchangeABI"; // Asegúrate de que la ruta de importación sea correcta
-import { ethers } from "ethers";
+// import { abiBond } from "../utils/bondExchangeABI"; // Asegúrate de que la ruta de importación sea correcta
+// import { ethers } from "ethers";
 const ClaimTokens: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedToken, setSelectedToken] = useState<string | null>(null);
 
   useEffect(() => {
-    async function getBalance() {
-      try {
-        const provider = new ethers.BrowserProvider(window.ethereum);
-        const signer = await provider.getSigner();
-        const contract = new ethers.Contract(
-          "0x5Cf4EaF7dF69440671cB38A06a60EBB0ff86618c", // dirección del contrato
-          abiBond,
-          signer
-        );
-        // Call the getAllBonds function
-        const balance = await contract.getBalance();
-        console.log("Balance", balance);
-      } catch (error) {
-        console.error("Error fetching bonds:", error);
-      }
-    }
+    // async function getBalance() {
+    //   try {
+    //     const provider = new ethers.BrowserProvider(window.ethereum);
+    //     const signer = await provider.getSigner();
+    //     const contract = new ethers.Contract(
+    //       "0x5Cf4EaF7dF69440671cB38A06a60EBB0ff86618c", // dirección del contrato
+    //       abiBond,
+    //       signer
+    //     );
+    //     // Call the getAllBonds function
+    //     const balance = await contract.getBalance();
+    //     console.log("Balance", balance);
+    //   } catch (error) {
+    //     console.error("Error fetching bonds:", error);
+    //   }
+    // }
   }, []);
 
   const handleClaim = (token: string) => {
@@ -97,7 +97,11 @@ const ClaimTokens: React.FC = () => {
       </Box>
       {/* Modal de claim */}
       {isModalOpen && selectedToken && (
-        <ClaimModal token={selectedToken} onClose={closeModal} />
+        <ClaimModal
+          availableQuantity={45}
+          token={selectedToken}
+          onClose={closeModal}
+        />
       )}
     </Box>
   );
