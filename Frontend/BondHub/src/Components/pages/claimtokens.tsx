@@ -23,29 +23,6 @@ const ClaimTokens: React.FC = () => {
   const [data, setData] = useState({});
 
   useEffect(() => {
-    // async function getBalance() {
-    //   try {
-    //     const provider = new ethers.BrowserProvider(window.ethereum);
-    //     const signer = await provider.getSigner();
-    //     const address = await signer.getAddress();
-    //     const contract = new ethers.Contract(
-    //       "0x5Cf4EaF7dF69440671cB38A06a60EBB0ff86618c",
-    //       abiBond,
-    //       signer
-    //     );
-    //     const balance = await contract.getBalance(
-    //       "0x20D330A4C3a913b5915e899B8F5eeD3aA3915823",
-    //       " 0xc9483CA310EA13D4248620e9D1e1EB935edb8765"
-    //     );
-    //     console.log("Balance", balance);
-    //   } catch (error) {
-    //     console.error("Error fetching bonds:", error);
-    //   }
-    // }
-    // getBalance();
-  }, []);
-
-  useEffect(() => {
     async function getAllBonds() {
       try {
         const provider = new ethers.BrowserProvider(window.ethereum);

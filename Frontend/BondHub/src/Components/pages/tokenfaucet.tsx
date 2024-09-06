@@ -12,6 +12,7 @@ import {
 import { ethers } from "ethers";
 import abipToken from "../utils/pToken1ABI"; // Asegúrate de que la ruta sea correcta
 import NavBar from "../navbar"; // Asegúrate de que la ruta sea correcta
+import generalBg from "../../assets/images/generalbg.png"; // Asegúrate de que la ruta sea correcta
 
 const TokenFaucet: React.FC = () => {
   const [contractAddress, setContractAddress] = useState("");
@@ -60,7 +61,13 @@ const TokenFaucet: React.FC = () => {
   }
 
   return (
-    <Box minH="100vh" color="white">
+    <Box
+      bgImage={generalBg}
+      bgRepeat={"no-repeat"}
+      bgSize={"cover"}
+      minH="100vh"
+      color="white"
+    >
       <NavBar /> {/* Barra de navegación */}
       <Box maxW="500px" mx="auto" mt="8rem" textAlign="center">
         <Text as="h2" mb="4">

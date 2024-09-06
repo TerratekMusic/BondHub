@@ -12,11 +12,47 @@ import {
   GridItem,
   Divider,
 } from "@chakra-ui/react";
+import { ethers } from "ethers";
+import { abiBond } from "../utils/bondExchangeABI";
 
 import { useDisclosure } from "@chakra-ui/react"; // Asegúrate de importar useDisclosure
 
-export default function EarningsModal() {
+interface EarningsModalProps {
+  token: string;
+  availableQuantity: number;
+  owner: string;
+}
+
+export default function EarningsModal({
+  token,
+  availableQuantity,
+  owner,
+}: EarningsModalProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  function shortenString(str: string): string {
+    if (str.length > 4) {
+      return `...${str.slice(-4)}`;
+    }
+    return str;
+  }
+
+  async function claimEarnings() {
+    try {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const contract = new ethers.Contract(
+        "0x5Cf4EaF7dF69440671cB38A06a60EBB0ff86618c",
+        abiBond,
+        signer
+      );
+
+      const tx = await contract.withdrawTokens(token);
+      console.log("Transaction hash:", tx.hash);
+    } catch (error) {
+      console.error("Error calling withdrawTokens:", error);
+    }
+  }
 
   return (
     <>
@@ -31,6 +67,7 @@ export default function EarningsModal() {
             <Text fontSize="lg" fontWeight="bold">
               Claim Earnings
             </Text>
+            <Text>{token}</Text>
           </ModalHeader>
           <ModalCloseButton />
 
@@ -38,19 +75,18 @@ export default function EarningsModal() {
             <Grid templateColumns="repeat(2, 1fr)" gap={6} mb={4}>
               <GridItem>
                 <Text fontWeight="bold">Market</Text>
-                <Text>$pToken</Text>
               </GridItem>
               <GridItem>
                 <Text fontWeight="bold">Asset to claim</Text>
                 <Text>$ETH</Text>
               </GridItem>
               <GridItem>
-                <Text fontWeight="bold">Total Amount</Text>
-                <Text>0.01</Text>
+                <Text fontWeight="bold">Total Amount in gwei</Text>
+                <Text>{availableQuantity}</Text>
               </GridItem>
               <GridItem>
                 <Text fontWeight="bold">Treasury Address</Text>
-                <Text>0x00000</Text>
+                <Text>{shortenString(owner)}</Text>
               </GridItem>
             </Grid>
 
@@ -58,7 +94,7 @@ export default function EarningsModal() {
           </ModalBody>
 
           <ModalFooter justifyContent="center">
-            <Button colorScheme="blue" onClick={onClose}>
+            <Button colorScheme="blue" onClick={claimEarnings}>
               Claim
             </Button>
           </ModalFooter>

@@ -38,14 +38,6 @@ const NavBar: React.FC = () => {
     const address = await signer.getAddress();
 
     setAddress(address);
-
-    // Instantiate the contract
-    // const contractInstance = new ethers.Contract(
-    //   contractAddress,
-    //   contractABI,
-    //   signer
-    // );
-    // setContract(contractInstance);
   };
 
   console.log(address);
