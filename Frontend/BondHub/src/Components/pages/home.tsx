@@ -1,6 +1,7 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { Box, Text, Button } from '@chakra-ui/react';
+import React from "react";
+import { Link } from "react-router-dom";
+import { Box, Text, Button } from "@chakra-ui/react";
+import generalBg from "../../assets/images/generalbg.png";
 
 const Home: React.FC = () => {
   return (
@@ -11,11 +12,10 @@ const Home: React.FC = () => {
       alignItems="center"
       minH="100vh"
       color="white"
+      bgImage={generalBg}
     >
       <Box textAlign="center" maxW="600px" p="20px">
-        <Text as="h1">
-          Bondhub
-        </Text>
+        <Text as="h1">Bondhub</Text>
         <Text as="h2" fontSize="xl">
           Build Robust Treasuries and Empower Your Token Holders
         </Text>
@@ -23,7 +23,7 @@ const Home: React.FC = () => {
           <Link to="/marketlab">
             <Button
               variant="solid"
-              colorScheme="brand"  // Usa los estilos definidos en el tema
+              colorScheme="brand" // Usa los estilos definidos en el tema
               margin="10px"
             >
               Markets Lab
@@ -32,7 +32,7 @@ const Home: React.FC = () => {
           <Link to="/marketplace">
             <Button
               variant="solid"
-              colorScheme="brand"  // Usa los estilos definidos en el tema
+              colorScheme="brand" // Usa los estilos definidos en el tema
               margin="10px"
             >
               Marketplace
