@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { Box, Button, Input, TagLabel, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Heading,
+  Input,
+  TagLabel,
+  Text,
+  VStack,
+  Flex,
+} from "@chakra-ui/react";
 import { ethers } from "ethers";
 import abipToken from "../utils/pToken1ABI"; // Asegúrate de que la ruta sea correcta
 import NavBar from "../navbar"; // Asegúrate de que la ruta sea correcta
@@ -9,6 +18,7 @@ const TokenFaucet: React.FC = () => {
   const [recipientAddress, setRecipientAddress] = useState("");
   const [mintAmount, setMintAmount] = useState<string>("100"); // Puedes establecer un valor predeterminado
   const [message, setMessage] = useState<string>("");
+  const [balance, setBalance] = useState<string>("0");
 
   const handleMint = async () => {
     try {
@@ -43,8 +53,9 @@ const TokenFaucet: React.FC = () => {
     const balance = await contract.balanceOf(recipientAddress);
     console.log("balance 1", balance);
     console.log(`Raw balance: ${balance.toString()}`);
-    const formattedBalance = ethers.utils.formatUnits(balance, "gwei");
-    console.log(formattedBalance);
+
+    const stringBalance = balance.toString();
+    setBalance(stringBalance);
     // console.log(`Balance: ${ethers.utils.formatUnits(balance, 18)} tokens`);
   }
 
@@ -95,6 +106,10 @@ const TokenFaucet: React.FC = () => {
           <Button colorScheme="blue" onClick={getBalance}>
             Balance pToken2
           </Button>
+          <Flex>
+            <Heading>Balance</Heading>
+            <Text color="green">{balance}</Text>
+          </Flex>
           {message && <Text mt="4">{message}</Text>}
         </VStack>
       </Box>

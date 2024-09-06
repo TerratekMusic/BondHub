@@ -51,6 +51,24 @@ export default function ClaimModal({
     }
     getBalance();
   }, []);
+
+  async function claimTokens() {
+    try {
+      const provider = new ethers.BrowserProvider(window.ethereum);
+      const signer = await provider.getSigner();
+      const contract = new ethers.Contract(
+        "0x5Cf4EaF7dF69440671cB38A06a60EBB0ff86618c",
+        abiBond,
+        signer
+      );
+
+      const tx = await contract.withdrawTokens(token);
+      console.log("Transaction hash:", tx.hash);
+    } catch (error) {
+      console.error("Error calling withdrawTokens:", error);
+    }
+  }
+
   return (
     <Modal size="lg" isCentered isOpen={true} onClose={onClose}>
       <ModalOverlay backdropFilter="blur(10px)" />
@@ -84,11 +102,7 @@ export default function ClaimModal({
         </ModalBody>
 
         <ModalFooter justifyContent="flex-start">
-          <Button
-            colorScheme="blue"
-            mr={3}
-            onClick={() => console.log(`Claiming ${token}`)}
-          >
+          <Button colorScheme="blue" mr={3} onClick={claimTokens}>
             Claim
           </Button>
         </ModalFooter>
