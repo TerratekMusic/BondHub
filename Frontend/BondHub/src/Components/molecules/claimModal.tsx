@@ -12,6 +12,8 @@ import {
   Grid,
   GridItem,
   Divider,
+  Spinner,
+  Center,
 } from "@chakra-ui/react";
 import { ethers } from "ethers";
 import { useEffect, useState } from "react";
@@ -31,6 +33,9 @@ export default function ClaimModal({
   onClose,
 }: ClaimModalProps) {
   const [balance, setBalance] = useState("0");
+  const [isLoading, setIsLoading] = useState(false); // Estado para el spinner
+  const [txSuccess, setTxSuccess] = useState(false); // Estado para éxito de transacción
+  const [txFailed, setTxFailed] = useState(false); // Estado para fallo de transacción
 
   useEffect(() => {
     async function getBalance() {
@@ -42,17 +47,17 @@ export default function ClaimModal({
           provider
         );
         const balance = await contract.getBalance(userAddress, token);
-        const balanceString = balance.toString();
-        setBalance(balanceString);
+        setBalance(balance.toString());
         console.log(`Balance: ${balance.toString()}`);
       } catch (error) {
         console.error("Error calling getBalance:", error);
       }
     }
     getBalance();
-  }, []);
+  }, [userAddress, token]);
 
   async function claimTokens() {
+    setIsLoading(true); // Muestra el spinner
     try {
       const provider = new ethers.BrowserProvider(window.ethereum);
       const signer = await provider.getSigner();
@@ -64,8 +69,13 @@ export default function ClaimModal({
 
       const tx = await contract.withdrawTokens(token);
       console.log("Transaction hash:", tx.hash);
+      await tx.wait(); // Espera la confirmación de la transacción
+      setTxSuccess(true); // Transacción exitosa
     } catch (error) {
       console.error("Error calling withdrawTokens:", error);
+      setTxFailed(true); // Transacción fallida
+    } finally {
+      setIsLoading(false); // Oculta el spinner
     }
   }
 
@@ -92,19 +102,23 @@ export default function ClaimModal({
           </Grid>
 
           <Divider mb={4} />
-
-          {/* <Grid templateColumns="repeat(2, 1fr)" gap={6} alignItems="center">
-            <GridItem>
-              <Text>{balance}</Text>{" "}
-            
-            </GridItem>
-          </Grid> */}
         </ModalBody>
 
         <ModalFooter justifyContent="flex-start">
-          <Button colorScheme="blue" mr={3} onClick={claimTokens}>
-            Claim
-          </Button>
+          {isLoading ? (
+            <Center>
+              <Spinner size="lg" color="yellow.500" />
+            </Center>
+          ) : txSuccess ? (
+            <Text color="green.500">Tx success!</Text>
+          ) : (
+            <>
+              <Button colorScheme="blue" mr={3} onClick={claimTokens}>
+                Claim
+              </Button>
+              {txFailed && <Text color="red.500">Tx failed, try again.</Text>}
+            </>
+          )}
         </ModalFooter>
       </ModalContent>
     </Modal>
