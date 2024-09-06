@@ -1,6 +1,7 @@
 // Ejemplo de NavBar con React Router y tres columnas
 import React from "react";
 import { Link } from "react-router-dom";
+import logo from "../assets/images/logo.png";
 // Import everything
 import { ethers } from "ethers";
 
@@ -54,11 +55,7 @@ const NavBar: React.FC = () => {
       <div style={{ flexGrow: 0 }}>
         {" "}
         {/* Sección del logo */}
-        <img
-          src="/src/assets/images/logo.png"
-          alt="Logo"
-          style={{ height: "50px" }}
-        />
+        <img src={logo} alt="Logo" style={{ height: "50px" }} />
       </div>
       <div style={{ flexGrow: 1, display: "flex", justifyContent: "center" }}>
         {" "}

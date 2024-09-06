@@ -20,6 +20,7 @@ import NavBar from "../navbar";
 import { Link } from "react-router-dom";
 import abipToken from "../utils/pToken1ABI";
 import { abiBond } from "../utils/bondExchangeABI";
+import generalBg from "../../assets/images/generalbg.png";
 
 const MarketLab: React.FC = () => {
   const [projectToken, setProjectToken] = useState("");
@@ -94,7 +95,14 @@ const MarketLab: React.FC = () => {
   };
 
   return (
-    <Box minH="100vh" color="white" padding="2rem">
+    <Box
+      bgImage={generalBg}
+      bgRepeat={"no-repeat"}
+      bgSize={"cover"}
+      minH="100vh"
+      color="white"
+      padding="2rem"
+    >
       <NavBar /> {/* Barra de navegación */}
       <Box maxW="800px" mx="auto" mt="4rem">
         <Heading as="h2" size="xl" mb="1.5rem" textAlign="center">

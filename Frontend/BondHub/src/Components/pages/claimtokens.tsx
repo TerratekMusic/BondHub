@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import NavBar from "../navbar"; // Asegúrate de que la ruta de importación sea correcta
 import ClaimModal from "../molecules/claimModal";
+import generalBg from "../../assets/images/generalbg.png";
 // import { abiBond } from "../utils/bondExchangeABI"; // Asegúrate de que la ruta de importación sea correcta
 // import { ethers } from "ethers";
 const ClaimTokens: React.FC = () => {
@@ -48,7 +49,15 @@ const ClaimTokens: React.FC = () => {
   };
 
   return (
-    <Box height="100vh" color="white" display="flex" flexDirection="column">
+    <Box
+      bgImage={generalBg}
+      bgRepeat={"no-repeat"}
+      bgSize={"cover"}
+      height="100vh"
+      color="white"
+      display="flex"
+      flexDirection="column"
+    >
       <NavBar /> {/* Barra de navegación */}
       <Box flex="1" maxW="40rem" mx="auto" mt="10rem" textAlign="center">
         <Heading as="h2" mb="1.5rem">

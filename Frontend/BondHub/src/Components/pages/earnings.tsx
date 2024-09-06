@@ -10,8 +10,9 @@ import {
   Td,
   useDisclosure,
 } from "@chakra-ui/react";
-import NavBar from "../navbar"; // Asegúrate de que la ruta de importación sea correcta
+import NavBar from "../navbar";
 import EarningsModal from "../molecules/earningsModal";
+import generalBg from "../../assets/images/generalbg.png";
 
 const Earnings: React.FC = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -34,7 +35,15 @@ const Earnings: React.FC = () => {
   };
 
   return (
-    <Box minH="100vh" color="white" display="flex" flexDirection="column">
+    <Box
+      bgImage={generalBg}
+      bgRepeat={"no-repeat"}
+      bgSize={"cover"}
+      minH="100vh"
+      color="white"
+      display="flex"
+      flexDirection="column"
+    >
       <NavBar /> {/* Barra de navegación */}
       <Box flex="1" maxW="60rem" mx="auto" mt="10rem" textAlign="center">
         <Heading as="h2" mb="1.5rem">

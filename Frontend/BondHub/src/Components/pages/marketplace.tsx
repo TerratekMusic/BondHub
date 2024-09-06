@@ -14,6 +14,7 @@ import {
   Td,
 } from "@chakra-ui/react";
 import BondModal from "../molecules/bondModal";
+import generalBg from "../../assets/images/generalbg.png";
 
 const Marketplace: React.FC = () => {
   // const [projectToken2, setProjectToken2] = useState(
@@ -86,7 +87,12 @@ const Marketplace: React.FC = () => {
   const bonds = parseBondsData(data);
 
   return (
-    <Box padding="10.5rem">
+    <Box
+      padding="10.5rem"
+      bgImage={generalBg}
+      bgRepeat={"no-repeat"}
+      bgSize={"cover"}
+    >
       <Heading as="h2" mb="2rem">
         Live markets
       </Heading>

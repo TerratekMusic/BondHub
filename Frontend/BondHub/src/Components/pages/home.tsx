@@ -13,6 +13,8 @@ const Home: React.FC = () => {
       minH="100vh"
       color="white"
       bgImage={generalBg}
+      bgRepeat={"no-repeat"}
+      bgSize={"cover"}
     >
       <Box textAlign="center" maxW="600px" p="20px">
         <Text as="h1">Bondhub</Text>
