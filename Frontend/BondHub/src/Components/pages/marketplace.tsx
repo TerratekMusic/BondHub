@@ -89,6 +89,7 @@ const Marketplace: React.FC = () => {
   return (
     <Box
       padding="10.5rem"
+      h="100%"
       bgImage={generalBg}
       bgRepeat={"no-repeat"}
       bgSize={"cover"}
