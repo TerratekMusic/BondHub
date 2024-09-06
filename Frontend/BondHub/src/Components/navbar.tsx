@@ -75,6 +75,9 @@ const NavBar: React.FC = () => {
         <Link to="/earnings" style={linkStyle}>
           Earnings
         </Link>
+        <Link to="/tokenFaucet" style={linkStyle}>
+          Faucet
+        </Link>
       </div>
       <div style={linkStyle}>
         <p>{address}</p>

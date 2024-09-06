@@ -15,6 +15,7 @@ import ClaimModal from "../molecules/claimModal";
 import generalBg from "../../assets/images/generalbg.png";
 import { abiBond } from "../utils/bondExchangeABI"; // Asegúrate de que la ruta de importación sea correcta
 import { ethers } from "ethers";
+
 const ClaimTokens: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedToken, setSelectedToken] = useState<string | null>(null);
