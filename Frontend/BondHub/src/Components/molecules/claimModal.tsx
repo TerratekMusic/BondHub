@@ -13,18 +13,44 @@ import {
   GridItem,
   Divider,
 } from "@chakra-ui/react";
+import { ethers } from "ethers";
+import { useEffect, useState } from "react";
+import { abiBond } from "../utils/bondExchangeABI";
 
 interface ClaimModalProps {
   token: string;
   availableQuantity: number;
+  userAddress: string;
   onClose: () => void;
 }
 
 export default function ClaimModal({
   token,
   availableQuantity,
+  userAddress,
   onClose,
 }: ClaimModalProps) {
+  const [balance, setBalance] = useState("0");
+
+  useEffect(() => {
+    async function getBalance() {
+      try {
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const contract = new ethers.Contract(
+          "0x5Cf4EaF7dF69440671cB38A06a60EBB0ff86618c",
+          abiBond,
+          provider
+        );
+        const balance = await contract.getBalance(userAddress, token);
+        const balanceString = balance.toString();
+        setBalance(balanceString);
+        console.log(`Balance: ${balance.toString()}`);
+      } catch (error) {
+        console.error("Error calling getBalance:", error);
+      }
+    }
+    getBalance();
+  }, []);
   return (
     <Modal size="lg" isCentered isOpen={true} onClose={onClose}>
       <ModalOverlay backdropFilter="blur(10px)" />
@@ -38,23 +64,23 @@ export default function ClaimModal({
         <ModalBody>
           <Grid templateColumns="repeat(2, 1fr)" gap={6} mb={4}>
             <GridItem>
-              <Text fontWeight="bold">Asset</Text>
-              <Text>{token}</Text>
+              <Text fontWeight="bold">User Address</Text>
+              <Text>{userAddress}</Text>
             </GridItem>
             <GridItem>
               <Text fontWeight="bold">Available Quantity</Text>
-              <Text>{availableQuantity}</Text>
+              <Text>{balance}</Text>
             </GridItem>
           </Grid>
 
           <Divider mb={4} />
 
-          <Grid templateColumns="repeat(2, 1fr)" gap={6} alignItems="center">
+          {/* <Grid templateColumns="repeat(2, 1fr)" gap={6} alignItems="center">
             <GridItem>
-              <Text>{availableQuantity}</Text>{" "}
-              {/* Aquí puedes agregar lógica para ajustar la cantidad a reclamar */}
+              <Text>{balance}</Text>{" "}
+            
             </GridItem>
-          </Grid>
+          </Grid> */}
         </ModalBody>
 
         <ModalFooter justifyContent="flex-start">
